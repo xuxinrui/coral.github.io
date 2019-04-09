@@ -1,2 +1,1 @@
-# coral.github.io
-coral.github.io
+index.html
