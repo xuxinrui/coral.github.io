@@ -47,15 +47,65 @@
 		}
 	}
 	
-#组件components	
-	
-#diff算法
+# 组件components	
 
-	当两个同级的元素相同时，就会比较这两个节点
+	<div id="app">
+		<child v-bind:props='fmsg'></child>
+	</div>
 	
-#Object.define Property(对象名，属性名，属性)  创建对象
+	<template id="t1"></template>
 	
-#Vue 怎么用 vm.$set() 解决对象新增属性不能响应的问题 	
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:'#app',
+			data:{
+				fmsg:'data.fmsg'
+			},
+			components:{
+				'child':{
+					props:['props'],
+					template: '<h1>{{props}}</h1>'
+				}
+			}
+
+		})
+	</script>
+	
+### diff算法
+
+	diff算法的本质是找出两个对象之间的差异，目的是尽可能复用节点。
+	diff 算法的本质是找出两个对象之间的差异
+	diff 算法的核心是子节点数组对比,思路是通过 首尾两端对比
+	key 的作用 主要是
+	决定节点是否可以复用
+	建立key-index的索引,主要是替代遍历，提升性能
+	
+### Object.defineProperty(对象名，属性名，属性)  创建对象
+
+	Vue 则采用的是数据劫持与发布订阅相结合的方式实现双向绑定，数据劫持主要通过 Object.defineProperty 来实现。
+	
+	<div id="app">
+	    <input type="text" id="txt">
+	    <p id="show"></p>
+	</div>
+	
+	<script type="text/javascript">
+		
+	    var obj = {}
+	    Object.defineProperty(obj, 'txt', {
+		get: function () {
+		    return obj
+		},
+		set: function (newValue) {
+		    //document.getElementById('txt').value = newValue
+		    document.getElementById('show').innerHTML = newValue
+		}
+	    })
+	    document.addEventListener('keyup', function (e) {
+		obj.txt = e.target.value
+	    })
+	</script>	
+ 	
 
 #虚拟 DOM 的实现原理主要包括以下 3 部分：
 
@@ -63,7 +113,7 @@
 	diff 算法 — 比较两棵虚拟 DOM 树的差异；
 	pach 算法 — 将两个虚拟 DOM 对象的差异应用到真正的 DOM 树	
 	
-#现在 vue3.0 也全面改用 TypeScript 来重写了
+#现在 vue3.0 也全面改用 TypeScript 来重写
 
 	3.0 将带来基于代理 Proxy 的 observer 实现，提供全语言覆盖的反应性跟踪。
 	这消除了 Vue 2 当中基于 Object.defineProperty 的实现所存在的很多限制：
@@ -72,12 +122,6 @@
 		3.检测数组索引和长度的变更；
 		4.支持 Map、Set、WeakMap 和 WeakSet。
 		
-#在哪个生命周期内调用异步请求？
-
-	可以在钩子函数 created、beforeMount、mounted 中进行调用，
-	因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
-	但是本人推荐在 created 钩子函数中调用异步请求，因为在 created 钩子函数中调用异步请求有以下优点：
-	
 ##v-once
 
 	<span v-once>这个将不会改变: {{ msg }}</span>
@@ -118,11 +162,12 @@
 	beforeDestory实例销毁之前调用，在这一步，实例仍然完全可用
 	destroyedVue实例销毁后调用，调用后，Vu实例指示的所有东西都会解绑定，
 		所有的事件监听器会被移除，所有的子实例也会被销毁，该钩子在服务器端渲染期间不被调用
-	
-	
-##父组件与子组件传值	
+		
+#在哪个生命周期内调用异步请求？
 
-	子组件传给父组件：$emit方法传递参数
+	可以在钩子函数 created、beforeMount、mounted 中进行调用，
+	因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
+	但是本人推荐在 created 钩子函数中调用异步请求
 	
 ##vue等单页面应用及其优缺点
 
@@ -134,18 +179,19 @@
 	第一次加载首页耗时相对长一些；
 	不可以使用浏览器的导航按钮需要自行实现前进、后退。
 
-##计算属性methods、computed
+### 计算属性methods、computed
 
 	相较于methods，不管依赖的数据变不变，methods都会重新计算，但是依赖数据不变的时候computed从缓存中获取，不会重新计算。
 
-##key的作用
+### key的作用
 
 	保证项和值对应
-##v-on 绑定多个方法
+	
+### v-on 绑定多个方法
 
 	<p v-on="{click:dbClick,mousemove:MouseClick}"></p>
 	
-##v-on事件修饰符
+### v-on事件修饰符
 
 	stop阻止单击事件冒泡
 	prevent提交事件不再重载页面
@@ -156,8 +202,8 @@
 	
 ##v-model的常用修饰符
 
-在添加了lazy之后，会把 oninput 事件改成 onchange 事件。
-trim的作用是过滤用户输入时首尾的空格字符。
+	在添加了lazy之后，会把 oninput 事件改成 onchange 事件。
+	trim的作用是过滤用户输入时首尾的空格字符。
 
 ##全局过滤器filter
 
@@ -218,62 +264,12 @@ trim的作用是过滤用户输入时首尾的空格字符。
 	})
 	
 	
-##自定义事件和$emit向父组件传值//////////////////////////
-
-	如果子组件要把数据传递回去，就需要使用自定义事件！
-	<div id="app">
-		<com v-bind:pmsg="msg" @func="getMsgFromSon"></com>
-	</div>
-	<template id="tmp1">
-		<div id="">
-			<h1>这是子元素————{{pmsg}}</h1>
-			<button type="button" @click="sendmsg">put</button>
-		</div>
-	</template>
-	
-	
-	<script type="text/javascript">
-		var com = {
-			props:['pmsg'],
-			template:"#tmp1",
-			data(){
-				return{
-					msg:"我还是个孩子"
-				}
-			},
-			methods:{
-				sendmsg(){
-					this.$emit('func',this.msg)
-				}
-			}
-		}
 		
-		var vm =new Vue({
-			el:'#app',
-			data:{
-				msg:'这是父组件',
-				msg2:''
-			},
-			methods:{
-				getMsgFromSon(data){
-					this.msg2 = data
-					console.log(this.msg2)
-				}
-			},
-			components:{
-				com
-			}
-		})
-	</script>
-	
-	
-##:todo循环组件数据
+## :todo循环组件数据
 
 	<child v-for= "items in arr" :todo="items"></child>
 	
-##组件切换//////////////////////////////////////////
 
-	<component v-bind:is="currentTabComponent"></component>
 	
 ##全局自定义指令Vue.directive
 
@@ -873,24 +869,24 @@ trim的作用是过滤用户输入时首尾的空格字符。
 	let f=(v)=>({c:(vv)=>v+vv});
 
 
+### Vue 怎么用 vm.$set() 解决对象新增属性不能响应的问题
+### 组件切换
 
+	<component v-bind:is="currentTabComponent"></component>
 
-##es6
-###vue
-
-
-##less
-##TypeScript
-
+#es6
+#vue
+#less
+#TypeScript
 #html
 #jquery
 #sql
 #ps
-###webpack
-###java
-###mysql
-###HTTP
-##week
+#webpack
+#java
+#mysql
+#HTTP
+#week
 #css
 #js
 
