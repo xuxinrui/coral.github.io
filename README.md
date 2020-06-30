@@ -47,19 +47,19 @@
 		}
 	}
 	
-# 组件components	
+### 组件components	
 
 	<div id="app">
 		<child v-bind:props='fmsg'></child>
 	</div>
 	
-	<template id="t1"></template>
+	<template id="t1"></template>？？
 	
 	<script type="text/javascript">
 		var vm = new Vue({
 			el:'#app',
 			data:{
-				fmsg:'data.fmsg'
+				fmsg:'我是你爸爸'
 			},
 			components:{
 				'child':{
@@ -125,13 +125,13 @@
 ### v-once
 
 	<span v-once>这个将不会改变: {{ msg }}</span>
-	<a v-bind:[attributeName]="url"> ... </a>
+	
 ### 怎样理解 Vue 的单向数据流？
 
 	所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，
 	但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
-###b生命周期
+### 生命周期
 
 	创建created、载入mounted、更新updated、销毁destroyed
 	beforeCreate（创建前） 在数据观测和初始化事件还未开始。
