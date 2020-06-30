@@ -107,13 +107,13 @@
 	</script>	
  	
 
-#虚拟 DOM 的实现原理主要包括以下 3 部分：
+### 虚拟 DOM 的实现原理主要包括以下 3 部分：
 
 	用 JavaScript 对象模拟真实 DOM 树，对真实 DOM 进行抽象；
 	diff 算法 — 比较两棵虚拟 DOM 树的差异；
 	pach 算法 — 将两个虚拟 DOM 对象的差异应用到真正的 DOM 树	
 	
-#现在 vue3.0 也全面改用 TypeScript 来重写
+### 现在 vue3.0 也全面改用 TypeScript 来重写
 
 	3.0 将带来基于代理 Proxy 的 observer 实现，提供全语言覆盖的反应性跟踪。
 	这消除了 Vue 2 当中基于 Object.defineProperty 的实现所存在的很多限制：
@@ -122,16 +122,16 @@
 		3.检测数组索引和长度的变更；
 		4.支持 Map、Set、WeakMap 和 WeakSet。
 		
-##v-once
+### v-once
 
 	<span v-once>这个将不会改变: {{ msg }}</span>
 	<a v-bind:[attributeName]="url"> ... </a>
-#怎样理解 Vue 的单向数据流？
+### 怎样理解 Vue 的单向数据流？
 
 	所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，
 	但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
-##生命周期
+###b生命周期
 
 	创建created、载入mounted、更新updated、销毁destroyed
 	beforeCreate（创建前） 在数据观测和初始化事件还未开始。
@@ -150,7 +150,7 @@
 	beforeDestroy（销毁前） 在实例销毁之前调用。实例仍然完全可用。
 	destroyed（销毁后） 在实例销毁之后调用。
 
-#Vue每个生命周期什么时候被调用
+### Vue每个生命周期什么时候被调用
 
 	beforeCreate在实例初始化之后，数据观测(data observer)之前被调用
 	created实例已经创建完成之后被调用，在这一步，完成已完成以下的配置：数据观测(data observer)，
@@ -163,13 +163,13 @@
 	destroyedVue实例销毁后调用，调用后，Vu实例指示的所有东西都会解绑定，
 		所有的事件监听器会被移除，所有的子实例也会被销毁，该钩子在服务器端渲染期间不被调用
 		
-#在哪个生命周期内调用异步请求？
+### 在哪个生命周期内调用异步请求？
 
 	可以在钩子函数 created、beforeMount、mounted 中进行调用，
 	因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
 	但是本人推荐在 created 钩子函数中调用异步请求
 	
-##vue等单页面应用及其优缺点
+### vue等单页面应用及其优缺点
 
 	优点：Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的视图组件，核心是一个响应的数据绑定系统。
 	MVVM、数据驱动、组件化、轻量、简洁、高效、快速、模块友好。
@@ -200,31 +200,31 @@
 	capture添加事件侦听器时使用事件捕获模式
 	self只当事件在该元素本身（而不是子元素）触发时触发回调
 	
-##v-model的常用修饰符
+### v-model的常用修饰符
 
 	在添加了lazy之后，会把 oninput 事件改成 onchange 事件。
 	trim的作用是过滤用户输入时首尾的空格字符。
 
-##全局过滤器filter
+### 全局过滤器filter
 
 	<p>过滤器res：<span>{{string | res}}</span></p>
 	
 	Vue.filter('res',function(val){
 		return val.split('').reverse().join('')
 	})
-##局部过滤器filter
+### 局部过滤器filter
 
 	filters:{
 	    FormatDate:function(v1,v2,v3){
 	        return v1+","+v2+","+v3
 	    }
 	}
-##监听$watch
+### 监听$watch
 
 	vm.$watch('change', function(nval, oval) {
 	    alert( oval + ' 变为 ' + nval);
 	});
-##监听watch
+### 监听watch
 
 	watch : {
 	        kilometers:function(val) {
@@ -232,7 +232,7 @@
 	            this.meters = this.kilometers * 1000
 	        }
 	}
-##全局基础组件Vue.component
+### 全局基础组件Vue.component
 
 	<child></child>
 	Vue.component('child', {
@@ -245,7 +245,7 @@
 	})
 	【如果data不是一个函数，那么当复用组件的时候，会导致数据改变同步】
 	
-##局部基础组件
+### 局部基础组件
 
 	components: {
 	    'runoob':{
@@ -254,7 +254,7 @@
 	  }
 	
 	
-##组件通过 Props 向子组件传递数据
+### 组件通过 Props 向子组件传递数据
 
 	 <child v-bind:title="data"></child> 
 	
@@ -265,13 +265,13 @@
 	
 	
 		
-## :todo循环组件数据
+### :todo循环组件数据
 
 	<child v-for= "items in arr" :todo="items"></child>
 	
 
 	
-##全局自定义指令Vue.directive
+### 全局自定义指令Vue.directive
 
 	<input type="text"  name="" id="" value="" v-focus />
 	
