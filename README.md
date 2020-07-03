@@ -675,7 +675,7 @@
 
 	设置line-height 等于height
 	position：absolute +top:50%+ transform:translateY(-50%)
-	display:flex + align-items: center
+	display:flex + align-items: center /*垂直对齐方式*/
 	display:table+display:table-cell + vertical-align: middle;
 
 
@@ -732,19 +732,29 @@
 
 #ajax
 	
-	var xmlhttp.responseText;. = '';
+	function loadXMLDoc()
+	{
+		var xmlhttp='';
 		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
+		{
+			//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+			xmlhttp=new XMLHttpRequest();
+		}
 		else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-
-	xmlhttp.open(method,url,async)
-	xmlhttp.responseText;
-	xmlhttp.readyState==4 && xmlhttp.status==200
+		{
+			// IE6, IE5 浏览器执行代码
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+			}
+		}
+		xmlhttp.open("GET","/try/ajax/ajax_info.txt",true);
+		xmlhttp.send();
+	}
 
 
 
@@ -790,14 +800,14 @@
 
 #字符串方法
 
-	indexOf() 方法返回字符串中指定文本首次出现的索引（位置）：
-		提取字符串	
-			slice(start, end) 提取字符串的某个部分并在新字符串中返回被提取的部分。
-			substring(start, end) 同上，数字不能为负数
-			substr(start, length)
-			replace()
-			charAt() 方法返回字符串中指定下标（位置）的字符串：
-			split() 将字符串转换为数组：
+	indexOf() 方法返回字符串中指定文本首次出现的索引（位置）
+	：提取字符串	
+	slice(start, end) 提取字符串的某个部分并在新字符串中返回被提取的部分。
+	substring(start, end) 同上，数字不能为负数
+	substr(start, length)
+	replace()
+	charAt() 方法返回字符串中指定下标（位置）的字符串：
+	split() 将字符串转换为数组：
 			
 #数组去重
 
@@ -805,6 +815,23 @@
 	    新数组.push(旧数组[i]);
 	}			
 	
+## 添加排序函数的sort()
+	<script type="text/javascript">
+		function sortNumber(a,b)
+		{
+		    return a - b
+		}
+		var arr = new Array(6)
+		arr[0] = "10"
+		arr[1] = "5"
+		arr[2] = "40"
+		arr[3] = "25"
+		arr[4] = "1000"
+		arr[5] = "1"
+		document.write(arr + "<br />")
+		document.write(arr.sort(sortNumber))
+	</script>
+
 #沉睡排序法
 
 	var arr = [1,55,4,7,88,75,4];
@@ -815,20 +842,21 @@
 	})
 #冒泡排序
 
-	function bSort(arr) {
-	  var len = arr.length;
-	  for (var i = 0; i < len-1; i++) {
-	    for (var j = 0; j < len - 1 - i; j++) {
-	         // 相邻元素两两对比，元素交换，大的元素交换到后面
-	        if (arr[j] > arr[j + 1]) {
-	            var temp = arr[j];
-	            arr[j] = arr[j+1];
-	            arr[j+1] = temp;
-	        }
-	    }
-	  }
-	  return arr;
+	let arr = ['445', 1223, 4590, 1, 3];
+	function paixu(arrr) {
+		var length = (arrr.length) - 1;
+		for (var i = 0; i < length; i++) {
+			for (var j = i + 1; j < length; j++) {
+				if (arr[i] > arr[j]) {
+					var temp = arr[i];
+					arr[i] = arr[j];
+					arr[j] = temp;
+				}
+			}
+		}
+		return arr;
 	}
+	console.log(paixu(arr));
 	
 		
 #数组方法
@@ -838,11 +866,11 @@
 	push() 方法（在数组结尾处）向数组添加一个新的元素：
 	shift() 方法会删除首个数组元素，并把所有其他元素“位移”到更低的索引。
 	unshift() 方法（在开头）向数组添加新元素，并“反向位移”旧元素：
-	=0时清空
+	.数组length=0时清空
 	splice(a, b, c);		
 		第一个参数（a）定义了应添加新元素的位置（拼接）。
 		第二个参数（b）定义应删除多少元素。
-		b定义要添加的新元素。
+		c定义要添加的新元素。
 	concat();
 		
 
