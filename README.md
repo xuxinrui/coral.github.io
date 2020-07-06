@@ -589,6 +589,8 @@
 	var json = {};
 	// 3. 所有字母出现的次数，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
 	for(var i = 0; i < newArr.length; i++){
+	
+	
 		  // 类似：json : { ‘a’: 3, ’b’: 1 }
 		  if(json[newArr[i]]){
 			 json[newArr[i]] +=1;
@@ -616,15 +618,8 @@
 	Gecko 内核：火狐，FF，MozillaSuite / SeaMonkey 等
 	Presto 内核：Opera7 及以上。[Opera 内核原为：Presto，现为：Blink]
 	Webkit 内核：Safari，Chrome 等。 [ Chrome 的：Blink（WebKit 的分支）]
-	
-	
-### split() join() 的区别
+	  
 
-	答案：前者是将字符串切割成数组的形式，后者是将数组转换成字符串
-#数组方法pop() push() unshift() shift()
-
-	答案：push()尾部添加 pop()尾部删除
-	unshift()头部添加 shift()头部删除
 #事件委托是什么
 
 	答案: 利用事件冒泡的原理，让自己的所触发的事件，让他的父元素代替执行
@@ -653,12 +648,18 @@
 
 
 #apply、call、bind
-
-	call、apply和bind是Function对象自带的三个方法，都是为了改变函数体内部 this 的指向。
 	
+
 	apply 、 call 、bind 三者第一个参数都是 this 要指向的对象，也就是想指定的上下文；
 	apply 、 call 、bind 三者都可以利用后续参数传参；
 	bind 是返回对应 函数，便于稍后调用；apply 、call 则是立即调用 。
+	三者都可以改变函数的this对象指向。
+	三者第一个参数都是this要指向的对象，如果如果没有这个参数或参数为undefined或null，则默认指向全局window。
+	三者都可以传参，但是apply是数组，而call是参数列表，且apply和call是一次性传入参数，而bind可以分为多次传入。
+	bind 是返回绑定this之后的函数，便于稍后调用；apply 、call 则是立即执行 。
+	apply(thisArg, [argsArray])
+	call(thisArg, arg1, arg2, …)
+
 
 #盒子模型
 
@@ -878,6 +879,9 @@
 闭包面试题
 
 ### 典型闭包
+
+	函数内部可以访问函数外部的变量，反之不能访问。如果需要访问，则需要用到ruturn.
+	ie无法回收闭包内变量的内存空间
 
 	var arr = [1,2,3,4,5];
 	for(var i = 0; i < arr.length; i++){
