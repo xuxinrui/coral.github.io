@@ -1,3 +1,131 @@
+### vscode
+### mvvm 
+### 声明式编程    命令式编程
+### 缩进2个空格
+### 设置代码段
+### Mustache语法{{}}
+### 循环、异步
+### filter map reduce
+### 懒加载
+### es6数组
+### 动态组件
+
+### 什么是渐进式框架
+	渐进式意味着可以将VUE作为应用的一部分嵌入其中
+	
+### VUE高级功能
+	解耦视图和数据
+	组件
+	路由
+	状态管理
+	虚拟dom
+### v-once 
+	只渲染一次，不会随着数据的改变而改变
+	<h1 v-once>{{}}</h1>
+### v-html
+	相比v-text可以解析标签
+	<h1 v-html=""></h1>
+### v-pre
+	原封不动得显示【不解析】
+	<h1 v-pre>{{}}</h1>
+### v-cloak解决闪烁
+	在vue解析之前，div中有一个属性v-cloak
+	在vue解析之后，div中没有v-cloak
+	[v-cloak]{display:none;}
+	<h1 v-cloak>{{}}</h1>
+### v-bind:绑定属性
+
+### 类绑定
+	<div v-bind:class="{ 类名: 布尔值 }"></div>
+	<div v-bind:class="[ 类名 ]"></div>
+### 属性绑定
+	<div v-bind:style="{ css属性名: css属性值 }"></div>
+	<div v-bind:style="[ {,} ]"></div>
+	
+### 什么场景使用计算属性
+	计算属性一般没有set方法，只读属性
+	computed: 每次调用的时候，如果里面的数据没有发生变化，将不会再次执行这个函数
+### 对象增强写法
+	let obj = {
+		name,
+		age,
+		run(){}
+	}
+	等于
+	let obj = {
+		name:name,
+		age:age,
+		run:function(){}
+	}
+	
+### v-on:传参
+	<div v-on:click="run(''.$event)"></div>
+### 事件修饰
+	.stop阻止冒泡：       <div v-on:click.stop="run()"></div>
+	.prevent阻止默认事件：<div v-on:click.prevent="run()"></div>
+	.once只出发一次：     <div v-on:click.once="run()"></div>
+### 事件冒泡
+	点击子元素的时候，如果父元素也有事件，那么两个地方的事件都会触发。
+	当子元素添加了.stop的时候，就不会同时触发父级的事件
+### 出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
+
+### 数组splice()
+
+	arrayObject.splice(index,howmany,item1,.....,itemX)
+	index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
+	howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+	item1, ..., itemX	可选。向数组添加的新项目。
+	
+### set()修改数据
+	//set(要修改的对象，索引值，修改后的值)
+	Vue.set(this.arr,1,'')
+
+### filters过滤器
+	<div>{{name | notnumber}}</div>
+	-------------------------------
+	filters:{
+		notnumber(n){
+			return n.xxxxxxxx;
+		}
+	}
+	
+### 数组方法filter【过滤】
+	const nums=[33,22,77,123,667,2,273]
+	let nnums = nums.filter(function(n){
+		return n < 100
+	})
+	console.log(nnums)  //[33, 22, 77, 2]
+	
+### 数组方法map【遍历】
+	const nums=[33,22,77,123,667,2,273]
+	let a = nums.map(function(n){
+		return n * 10
+	})
+	console.log() 
+### 数组方法reduce【汇总】
+	const nums=[33,22,77,123,667,2,273]
+	let a = nums.reduce(function(prev,v){
+		return prev + v
+	},0)
+	
+### 数组多方法串联【过滤+遍历+汇总】
+	let newnums = nums.filter(function(n){
+		return n < 100
+	}).map(function(n){
+		return n * 10
+	}).reduce(function(prev,v){
+		return prev + v
+	},0)
+	
+	
+##  组件
+
+	
+### ES6导入导出
+	
+	
+		
+
 #### 样式绑定的区别   [值] {blooean} 
 
 	<div v-bind:class="{ active: isActive }"></div>
