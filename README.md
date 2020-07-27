@@ -1,3 +1,18 @@
+### Object.defineProperty 
+	Object.defineProperty 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
+	```let obj = {}
+			Object.defineProperty(obj,'name',{
+				get(){
+					//当访问该属性时，会调用此函数。
+					//return obj;
+				},
+				set(oldv){
+					//当属性值被修改时，会调用此函数
+					console.log(newv);
+				}
+			})
+
+
 ### vscode
 ### mvvm 
 ### 声明式编程    命令式编程
