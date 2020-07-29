@@ -1,30 +1,70 @@
 ### Object.defineProperty 
 	Object.defineProperty 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
-	```let obj = {}
-			Object.defineProperty(obj,'name',{
-				get(){
-					//当访问该属性时，会调用此函数。
-					//return obj;
-				},
-				set(oldv){
-					//当属性值被修改时，会调用此函数
-					console.log(newv);
-				}
-			})
+	let obj = {}
+	Object.defineProperty(obj,'name',{
+		get(){
+			//当访问该属性时，会调用此函数。
+			//return obj;
+		},
+		set(oldv){
+			//当属性值被修改时，会调用此函数
+			console.log(newv);
+		}
+	})
 
-
-### vscode
-### mvvm 
-### 声明式编程    命令式编程
-### 缩进2个空格
-### 设置代码段
-### Mustache语法{{}}
-### 循环、异步
-### filter map reduce
-### 懒加载
-### es6数组
 ### 动态组件
+	<div id="app">
+		<div>
+		    <component :is="'kkkkk'"></component> 
+		</div>
+	</div>
+	<script>
+		let kkkkk = { template:'<p>组件</p>'}
+	    let vm = new Vue({
+	        el:'#app',
+	        components:{kkkkk}
+		})
+	</script>
+	
+###谈谈你对MVVM开发模式的理解
+	MVVM分为Model、View、ViewModel三者。
+	Model 代表数据模型，数据和业务逻辑都在Model层中定义；
+	View 代表UI视图，负责数据的展示；
+	ViewModel 负责监听 Model 中数据的改变并且控制视图的更新，处理用户交互操作；
 
+### 数组方法filter【过滤】
+	const nums=[33,22,77,123,667,2,273]
+	let nnums = nums.filter(function(n){
+		return n < 100
+	})
+	console.log(nnums)  //[33, 22, 77, 2]
+	
+### 数组方法map【遍历】
+	const nums=[33,22,77,123,667,2,273]
+	let a = nums.map(function(n){
+		return n * 10
+	})
+	console.log() 
+### 数组方法reduce【汇总】
+	const nums=[33,22,77,123,667,2,273]
+	let a = nums.reduce(function(prev,v){
+		return prev + v
+	},0)
+
+
+### 路由懒加载
+	const Home = resolve => require(['../components/Home.vue'], resolve);
+	const Home = () => import('../components/Home.vue')
+	{
+		path:'',
+		components:Home
+	}
+
+### 异步组件
+	const Foo = () => Promise.resolve({
+	  template: '<div>hello vue !</div>'
+	})
+	
 ### 什么是渐进式框架
 	渐进式意味着可以将VUE作为应用的一部分嵌入其中
 	
@@ -34,6 +74,11 @@
 	路由
 	状态管理
 	虚拟dom
+	
+###ES6导入导出	
+	import r from('/r')
+	export default r
+	
 ### v-once 
 	只渲染一次，不会随着数据的改变而改变
 	<h1 v-once>{{}}</h1>
@@ -48,6 +93,8 @@
 	在vue解析之后，div中没有v-cloak
 	[v-cloak]{display:none;}
 	<h1 v-cloak>{{}}</h1>
+	
+	
 ### v-bind:绑定属性
 
 ### 类绑定
@@ -60,6 +107,45 @@
 ### 什么场景使用计算属性
 	计算属性一般没有set方法，只读属性
 	computed: 每次调用的时候，如果里面的数据没有发生变化，将不会再次执行这个函数
+	
+### 计算属性methods、computed
+	相较于methods，不管依赖的数据变不变，methods都会重新计算，但是依赖数据不变的时候computed从缓存中获取，不会重新计算。
+	每次使用时，methods里的函数都会调用
+	
+### computed和watch有什么区别
+
+	computed
+	computed是计算属性，也就是计算值，它更多用于计算值的场景
+	computed具有缓存性，computed的值在getter执行后是会缓存的，只有在它依赖的属性值改变之后，
+		下一次获取computed的值时重新调用对应的getter来计算
+	computed适用于计算比较消耗性能的计算场景
+	
+	watch
+	watch更多的是[观察]的作用，类似于某些数据的监听回调，用于观察props $emit或者本组件的值，当数据变化时来执行回调进行后续操作
+	无缓存性，页面重新渲染时值不变化也会执行
+	
+	使用场景
+	当我们要进行数值计算，而且依赖于其他数据，那么把这个数据设计为computed
+	如果你需要在某个数据变化时做一些事情，使用watch来观察这个数据变化。
+	
+### . computed 和 watch 有什么区别及运用场景?
+
+	区别
+	computed 计算属性 : 依赖其它属性值,并且 computed 的值有缓存,只有它依赖的属性值发生改变,
+		下一次获取 computed 的值时才会重新计算 computed 的值。
+	watch 侦听器 : 更多的是「观察」的作用,无缓存性,类似于某些数据的监听回调,每当监听的数据变化时都会执行回调进行后续操作。
+	运用场景
+	当我们需要进行数值计算,并且依赖于其它数据时,
+	应该使用 computed,因为可以利用 computed 的缓存特性,避免每次获取值时,都要重新计算。
+	当我们需要在数据变化时执行异步或开销较大的操作时,
+	应该使用 watch,使用 watch 选项允许我们执行异步操作 ( 访问一个 API ),限制我们执行该操作的频率,
+	并在我们得到最终结果前,设置中间状态。这些都是计算属性无法做到的。
+	
+	
+	
+	
+	
+	
 ### 对象增强写法
 	let obj = {
 		name,
@@ -82,7 +168,9 @@
 ### 事件冒泡
 	点击子元素的时候，如果父元素也有事件，那么两个地方的事件都会触发。
 	当子元素添加了.stop的时候，就不会同时触发父级的事件
+	
 ### 出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
+	这个KEY给每个节点做了唯一的标识，这样vue会重新渲染
 
 ### 数组splice()
 
@@ -104,24 +192,7 @@
 		}
 	}
 	
-### 数组方法filter【过滤】
-	const nums=[33,22,77,123,667,2,273]
-	let nnums = nums.filter(function(n){
-		return n < 100
-	})
-	console.log(nnums)  //[33, 22, 77, 2]
-	
-### 数组方法map【遍历】
-	const nums=[33,22,77,123,667,2,273]
-	let a = nums.map(function(n){
-		return n * 10
-	})
-	console.log() 
-### 数组方法reduce【汇总】
-	const nums=[33,22,77,123,667,2,273]
-	let a = nums.reduce(function(prev,v){
-		return prev + v
-	},0)
+
 	
 ### 数组多方法串联【过滤+遍历+汇总】
 	let newnums = nums.filter(function(n){
@@ -133,10 +204,10 @@
 	},0)
 	
 	
-##  组件
+
 
 	
-### ES6导入导出
+
 	
 	
 		
@@ -167,6 +238,7 @@
 	
 	1、子组件内创建一个方法：sendmsg();
 	2、子组件的sendmsg()方法内创建自定义方法this.$emit('函数名',参数)
+		创建出来的自定义事件func在实例中调用
 	3、子组件实例化中调用自定义方法，并在这个方法中调用父组件的方法
 	4、父组件的方法中getMsgFromSon(data)，data就是子组件通过emit传过来的参数
 	
@@ -190,7 +262,7 @@
 		}
 	}
 	
-### 组件components	
+### 组件props
 
 	<div id="app">
 		<child v-bind:props='fmsg'></child>
@@ -322,9 +394,7 @@
 	第一次加载首页耗时相对长一些；
 	不可以使用浏览器的导航按钮需要自行实现前进、后退。
 
-### 计算属性methods、computed
 
-	相较于methods，不管依赖的数据变不变，methods都会重新计算，但是依赖数据不变的时候computed从缓存中获取，不会重新计算。
 
 ### key的作用
 
@@ -613,34 +683,7 @@
 	
 
 	
-#computed和watch有什么区别
 
-	computed
-	computed是计算属性，也就是计算值，它更多用于计算值的场景
-	computed具有缓存性，computed的值在getter执行后是会缓存的，只有在它依赖的属性值改变之后，
-		下一次获取computed的值时重新调用对应的getter来计算
-	computed适用于计算比较消耗性能的计算场景
-	
-	watch
-	watch更多的是[观察]的作用，类似于某些数据的监听回调，用于观察props $emit或者本组件的值，当数据变化时来执行回调进行后续操作
-	无缓存性，页面重新渲染时值不变化也会执行
-	
-	使用场景
-	当我们要进行数值计算，而且依赖于其他数据，那么把这个数据设计为computed
-	如果你需要在某个数据变化时做一些事情，使用watch来观察这个数据变化。
-	
-#3. computed 和 watch 有什么区别及运用场景?
-
-	区别
-	computed 计算属性 : 依赖其它属性值,并且 computed 的值有缓存,只有它依赖的属性值发生改变,
-		下一次获取 computed 的值时才会重新计算 computed 的值。
-	watch 侦听器 : 更多的是「观察」的作用,无缓存性,类似于某些数据的监听回调,每当监听的数据变化时都会执行回调进行后续操作。
-	运用场景
-	当我们需要进行数值计算,并且依赖于其它数据时,
-	应该使用 computed,因为可以利用 computed 的缓存特性,避免每次获取值时,都要重新计算。
-	当我们需要在数据变化时执行异步或开销较大的操作时,
-	应该使用 watch,使用 watch 选项允许我们执行异步操作 ( 访问一个 API ),限制我们执行该操作的频率,
-	并在我们得到最终结果前,设置中间状态。这些都是计算属性无法做到的。
 	
 	
 #prop 验证，和默认值
@@ -668,16 +711,7 @@
 
 	数据驱动、组件系统
 	
-##谈谈你对MVVM开发模式的理解
 
-	MVVM分为Model、View、ViewModel三者。
-	Model 代表数据模型，数据和业务逻辑都在Model层中定义；
-	View 代表UI视图，负责数据的展示；
-	、、ViewModel 负责监听 Model 中数据的改变并且控制视图的更新，处理用户交互操作；
-	、、Model 和 View 并无直接关联，而是通过 ViewModel 来进行联系的，
-		Model 和 ViewModel 之间有着双向数据绑定的联系。
-		因此当 Model 中的数据改变时会触发 View 层的刷新，View 中由于用户交互操作而改变的数据也会在 Model 中同步。
-	这种模式实现了 Model 和 View 的数据自动同步，因此开发者只需要专注对数据的维护操作即可，而不需要自己操作 dom。
 	
 	
 ##网页从输入网址到渲染完成经历了哪些过程？
@@ -1003,7 +1037,7 @@
 	console.log(paixu(arr));
 	
 		
-#数组方法
+### 数组方法
 
 	join() 方法也可将所有数组元素结合为一个字符串。
 	pop() 方法从数组中删除最后一个元素：
@@ -1016,10 +1050,16 @@
 		第二个参数（b）定义应删除多少元素。
 		c定义要添加的新元素。
 	concat();
-		
+	
+### 数组排序方法	sort（）
 
+	通常按照字母顺序排序，如果想让数字按照数字大小排序，需要添加以下方法
+	var arr = ['10','5','40','25','10000','1']
+	function sortNumber(a,b){
+		return a - b
+	}
+	arr.sort(sortNumber)
 
-闭包面试题
 
 ### 典型闭包
 
@@ -1044,11 +1084,11 @@
 	let f=(v)=>({c:(vv)=>v+vv});
 
 
-### Vue 怎么用 vm.$set() 解决对象新增属性不能响应的问题
-### 组件切换
-
-	<component v-bind:is="currentTabComponent"></component>
-
+### vm.$set() 解决对象新增属性不能响应的问题
+	Vue.set( target, propertyName/index, value )
+	
+	
+	
 #es6
 #vue
 #less
@@ -1065,3 +1105,7 @@
 #css
 #js
 
+
+
+### 声明式编程    命令式编程
+### vscode
