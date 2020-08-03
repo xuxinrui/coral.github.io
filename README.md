@@ -1,3 +1,56 @@
+### 父子访问refs  roots
+	this.$refs.r1.func();
+	r1代表：<c ref="r1"></c>
+	func()代表：访问到的子元素的其中的一个方法
+
+	this.$root.$data.b
+	
+### 插槽slot
+	<body>
+		<div id="app">
+			<hl>
+				<span slot="bb">44</span>
+			</hl>
+			
+			<hl>
+				<template slot-scope="ss">
+					<li v-for="j in ss.data">{{j}}我不是</li>
+				</template>
+			</hl>
+		</div>
+		<template id="t1">
+			<div>
+				<p>我不是</p>
+				<slot name="aa"><span>11</span></slot>
+				<slot name="bb"><span>22</span></slot>
+				<slot name="cc"><span>33</span></slot>
+				
+				
+				<slot :data="names">
+					<ul>
+						<li v-for="i in names">{{i}}</li>
+					</ul>
+				</slot>
+			</div>
+		</template>
+	</body>
+	
+	<script type="text/javascript">
+		let vm  = new Vue({
+			el:"#app",
+			components:{
+				hl:{
+					template:"#t1",
+					data(){
+						return{
+							names:['武器','佐伊','妖姬']
+						}
+					}
+				}
+			}
+		})
+	</script>
+
 ### Object.defineProperty 
 	Object.defineProperty 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
 	let obj = {}
@@ -75,7 +128,7 @@
 	状态管理
 	虚拟dom
 	
-###ES6导入导出	
+### ES6导入导出	
 	import r from('/r')
 	export default r
 	
