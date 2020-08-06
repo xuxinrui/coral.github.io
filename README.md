@@ -1,8 +1,13 @@
-### 父子访问refs  roots
-	this.$refs.r1.func();
-	r1代表：<c ref="r1"></c>
-	func()代表：访问到的子元素的其中的一个方法
+### 创建vue脚手架
 
+
+### 父子访问refs  roots
+	*父访问子：refs
+	this.$refs.r1.func();
+	r1代表：<c ref="r1"></c>   选中ref="r1"的子组件
+	func()代表：访问到的子元素的其中的一个方法
+	
+	*子访问父
 	this.$root.$data.b
 	
 ### 插槽slot
