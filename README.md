@@ -1,7 +1,71 @@
 ## scss
 ## vue网络请求
-## promise
 
+
+
+## promise
+		Promise 是异步编程的一种解决方案
+### Promise对象有以下三个特点
+		1、对象的状态不受外界影响
+		2、一旦状态改变，就不会再变
+		3、Promise也有一些缺点。首先，无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+		
+### promise基本用法
+
+		const promise = new Promise(function(resolve, reject) {
+		  // ... some code
+		
+		  if (/* 异步操作成功 */){
+		    resolve(value);
+		  } else {
+		    reject(error);
+		  }
+		});
+		resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”
+		在异步操作成功时调用，并将异步操作的结果，【作为参数传递出去】
+### Promise then
+		Promise实例生成以后，可以用then方法分别指定resolved状态和rejected状态的回调函数。
+		const p = new Promise(function(resolve, reject) {
+		  if(0){
+				resolve(123)
+			}else{
+				reject(456)
+			}
+		}).then(
+			res=>{},
+			err=>{console.log(err)}
+		)
+		
+		备注：catch也可以
+ ### promise的三个状态
+		pending：等待状态，比如正在进行网络请求，或者定时器没有到时间。
+		fulfill：满足状态，当我们主动回调了resolve时，就处于该状态，并且会回调.then()
+		reject：拒绝状态，当我们主动回调了reject时，就处于该状态，并且会回调.catch()
+		
+ ### promise链式调用
+		1、基础链式调用
+		const p = new Promise(function(resolve, reject) {
+				resolve(1)
+		}).then(res=>{
+				console.log(res);
+				return Promise.resolve(res+"3")
+			}).then(res=>{
+				console.log(res);
+				return Promise.resolve(res+"4")
+			}).then(res=>{
+				console.log(res);
+				return Promise.resolve(res+"5")
+			})
+		2、链式调用简写
+		const p = new Promise(function(resolve, reject) {
+				resolve(1)
+		}).then(res=>{
+				console.log(res);
+				return res+"2"
+			}).then(res=>{
+				console.log(res);
+				return res+"3"
+			})
 ## vue脚手架
 	1、安装node
 	2、安装webpack ：npm install webpack -g
@@ -157,7 +221,94 @@
 	
 	
 ###	路由传参
-	创建新的组件Profile.vue
+	一、router-link路由导航
+	
+	父组件: 使用<router-link to = "/跳转路径/传入的参数"></router-link>
+	
+	例如：<router-link to="/a/123">routerlink传参</router-link>
+	
+	子组件: this.$route.params.num接收父组件传递过来的参数
+	
+	mounted () {
+	  this.num = this.$route.params.num
+	}
+	路由配置:：{path: '/a/:num', name: A, component: A}
+	
+	地址栏中的显示:：http://localhost:8080/#/a/123
+	
+	二、调用$router.push实现路由传参
+	
+	父组件: 绑定点击事件，编写跳转代码
+	
+	<button @click="deliverParams(123)">push传参</button>
+	  methods: {
+	    deliverParams (id) {
+	      this.$router.push({
+	        path: `/d/${id}`
+	      })
+	    }
+	  }
+	子组件: this.$route.params.id接收父组件传递过来的参数
+	
+	mounted () {
+	  this.id = this.$route.params.id
+	}
+	路由配置:：{path: '/d/:id', name: D, component: D}
+	
+	地址栏中的显示:：http://localhost:8080/#/d/123
+	
+	三、通过路由属性中的name匹配路由，再根据params传递参数
+	
+	父组件: 匹配路由配置好的属性名
+	
+	<button @click="deliverByName()">params传参</button>
+	    deliverByName () {
+	      this.$router.push({
+	        name: 'B',
+	        params: {
+	          sometext: '一只羊出没'
+	        }
+	      })
+	    }
+	子组件:
+	
+	<template>
+	  <div id="b">
+	    This is page B!
+	    <p>传入参数：{{this.$route.params.sometext}}</p>
+	  </div>
+	</template>
+	路由配置: 路径后面不需要再加传入的参数，但是name必须和父组件中的name一致
+	{path: '/b', name: 'B', component: B}
+	
+	地址栏中的显示: 可以看出地址栏不会带有传入的参数，且再次刷新页面后参数会丢失
+	http://localhost:8080/#/b
+	
+	四、通过query来传递参数
+	
+	父组件:
+	
+	<button @click="deliverQuery()">query传参</button>
+	    deliverQuery () {
+	      this.$router.push({
+	        path: '/c',
+	        query: {
+	          sometext: '这是小羊同学'
+	        }
+	      })
+	    }
+	子组件:
+	
+	<template>
+	  <div id="C">
+	    This is page C!
+	    <p>这是父组件传入的数据: {{this.$route.query.sometext}}</p>
+	  </div>
+	</template>
+	路由配置: 不需要做任何修改
+	{path: '/c', name: 'C', component: C}
+
+	
 	
 	
 ## vuex
@@ -880,12 +1031,25 @@
 	Vue推荐的做法是webpack+vue-loader的单文件组件格式,即html,css,jd写在同一个文件;
 
 ##延迟回调$nextTick
-
+	vue中的nextTick主要用于处理数据动态变化后，DOM还未及时更新的问题，用nextTick就可以获取数据更新后最新DOM的变化
 	有些时候在改变数据后立即要对dom进行操作，此时获取到的dom仍是获取到的是数据刷新前的dom
+	
 	vue实现响应式并不是数据发生变化后dom立即变化，而是按照一定的策略来进行dom更新。
 	$nextTick 是在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后使用 $nextTick，则可以在回调中获取更新后的 DOM
-	this.$nextTick(() => //这里才可以 
-	})
+		适用场景：
+		第一种：有时需要根据数据动态的为页面某些dom元素添加事件，这就要求在dom元素渲染完毕时去设置，
+		但是created与mounted函数执行时一般dom并没有渲染完毕，所以就会出现获取不到，添加不了事件的问题，
+		这回就要用到nextTick处理
+		第二种：在使用某个第三方插件时 ，希望在vue生成的某些dom动态发生变化时重新应用该插件，
+		也会用到该方法，这时候就需要在 $nextTick 的回调函数中执行重新应用插件的方法，例如:应用滚动插件better-scroll时
+		
+		monted(){
+			this.$nextTick(() => 
+				//这里才可以
+			})
+		}
+		
+	
 
 
 #怎么解决vue动态设置img的src不生效的问题
@@ -1375,7 +1539,13 @@
 	arr[3]();
 	
 #outline: none;
-#let / const
+### let / const
+		var声明变量可以重复声明，而let不可以重复声明
+		var是不受限于块级的，而let是受限于块级
+		var会与window相映射（会挂一个属性），而let不与window相映射
+		var可以在声明的上面访问变量，而let有暂存死区，在声明的上面访问变量会报错
+		const声明之后必须赋值，否则会报错const定义不可变的量，改变了就会报错
+		const和let一样不会与window相映射、支持块级作用域、在声明的上面访问变量会报错
 
 #箭头函数
 	基础
@@ -1409,3 +1579,21 @@
 
 ### 声明式编程    命令式编程
 ### vscode
+
+## 移动端兼容
+	3.h5底部输入框被键盘遮挡问题h5页面有个很蛋疼的问题就是，当输入框在最底部，点击软键盘后输入框会被遮挡。可采用如下方式解决var oHeight = $(document).height(); //浏览器当前的高度
+	
+	   $(window).resize(function(){
+	
+	        if($(document).height() < oHeight){
+	
+	        $("#footer").css("position","static");
+	    }else{
+	
+	        $("#footer").css("position","absolute");
+	    }
+	
+	   });
+  rem单位
+	媒体查询
+	CSS初始化
