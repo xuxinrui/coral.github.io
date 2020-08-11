@@ -9,7 +9,8 @@
 
 	? Check the features needed for your project: (Press <space> to select, <a> to toggle all, <i> to invert selection)
 	>(* ) Babel //转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。 
-	( ) TypeScript// TypeScript是一个JavaScript（后缀.js）的超集（后缀.ts）包含并扩展了 JavaScript 的语法，需要被编译输出为 JavaScript在浏览器运行
+	( ) TypeScript// TypeScript是一个JavaScript（后缀.js）的超集（后缀.ts）包含并扩展了 JavaScript 的语法，
+		需要被编译输出为 JavaScript在浏览器运行
 	( ) Progressive Web App (PWA) Support// 渐进式Web应用程序
 	(* ) Router // vue-router（vue路由）
 	(* ) Vuex // vuex（vue的状态管理模式）
@@ -32,7 +33,7 @@
 	
 	如果安装了vue-template-conpiler
 	【render函数】------>【虚拟dom】------->UI
-##render函数
+## render函数
 	普通用法
 	const vm = new Vue({
 		el:"#app",
@@ -344,7 +345,7 @@
 		})
 	</script>
 	
-###谈谈你对MVVM开发模式的理解
+### 谈谈你对MVVM开发模式的理解
 	View层：
 	视图层
 	在我们前端开发中，通常就是DOM层。
