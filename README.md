@@ -1,8 +1,256 @@
-路由
-组件
-网络访问
+## scss
+## vue网络请求
+## promise
 
-### 创建vue脚手架
+## vue脚手架
+	1、安装node
+	2、安装webpack ：npm install webpack -g
+	3、安装vue cli
+
+	? Check the features needed for your project: (Press <space> to select, <a> to toggle all, <i> to invert selection)
+	>(* ) Babel //转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。 
+	( ) TypeScript// TypeScript是一个JavaScript（后缀.js）的超集（后缀.ts）包含并扩展了 JavaScript 的语法，需要被编译输出为 JavaScript在浏览器运行
+	( ) Progressive Web App (PWA) Support// 渐进式Web应用程序
+	(* ) Router // vue-router（vue路由）
+	(* ) Vuex // vuex（vue的状态管理模式）
+	( ) CSS Pre-processors // CSS 预处理器（如：less、sass）
+	(* ) Linter / Formatter // 代码风格检查和格式化（如：ESlint）
+	( ) Unit Testing // 单元测试（unit tests）
+	( ) E2E Testing // e2e（end to end） 测试
+
+	Use history mode for router? (Requires proper server setup for index fallback in production)  
+	Vue-Router 利用了浏览器自身的hash 模式和 history 模式的特性来实现前端路由（通过调用浏览器提供的接口）。
+	选n。这样打包出来丢到服务器上可以直接使用了，后期要用的话，也可以自己再开起来。
+	选yes的话需要服务器那边再进行设置。
+
+### 脚手架配置之
+	如果在之后的开发中，你依然使用template，就需要选择Runtime-Compiler
+	如果你之后的开发中，使用的是.vue文件夹开发，那么可以选择Runtime-only
+
+### vue程序运行过程
+	【template】---解析-->【ast抽象语法树】---编译--->【render函数】------>【虚拟dom】------->UI
+	
+	如果安装了vue-template-conpiler
+	【render函数】------>【虚拟dom】------->UI
+##render函数
+	普通用法
+	const vm = new Vue({
+		el:"#app",
+		render: (h) => {
+			return h('h1',{class:"h"},['wobushi'])
+		}
+	})
+	嵌套：
+	const vm = new Vue({
+		el:"#app",
+		render: (h) => {
+			return h('h1',{class:"h"},['wobushi'h('h2',[xuxinrui])])
+		}
+	})
+
+
+## 路由
+### 路由基础
+
+	<router-view></router-view>
+	<router-link  to="/login?id=10" tag="span">登录</router-link>
+	<router-link  to="/reg/11">注册</router-link>
+	
+	router:new VueRouter({
+		routes:[
+			{path:'/',redirect:'/login'},//redirect重定向
+			{path:'/login',component:login},
+			{path:'/reg/:id',component:reg}
+		]
+		
+	})
+
+### 路由的默认路径【redirect】
+	const routes = [
+		{
+			path:'/',
+			redirect:'/home'
+			component:
+		}
+	]
+
+### 路由模式
+	const router = new VueRouter({
+	  routes:r,
+	  mode:"history",
+	  linkActiveClass:""
+	})
+
+### 路由代码跳转
+	有时候, 页面的跳转可能需要执行对应的JavaScript代码, 这个时候, 就可以使用触发事件的跳转方式了
+	<buttton @click="tiaozhuan"></botton>
+	
+	mathods:{
+		tiaozhuan(){
+			this.$route.push('/home')
+		}
+	}
+### 动态路由
+	在某些情况下，一个页面的path路径可能是不确定的，比如我们进入用户界面时，希望是如下的路径：
+	/user/aaaa或/user/bbbb
+	除了有前面的/user之外，后面还跟上了用户的ID
+	这种path和Component的匹配关系，我们称之为动态路由(也是路由传递数据的一种方式)。
+	
+	1、格式
+	[
+		path:"/home/:id"
+	]
+	2、获取id
+		{{$route.params.id}}
+	3、传递
+	<router-link to:"/home/123">点击跳转</router-link>
+
+### 路由懒加载
+	1、amd写法
+	const Home = resolve => require(['../components/Home.vue'], resolve);
+	2、es6写法
+	const Home = () => import('../components/Home.vue')
+	{
+		path:'',
+		components:Home
+	}	
+	
+### 嵌套路由
+	实现嵌套*路由的两个步骤:
+	1、创建对应的子组件, 并且在路由映射中配置对应的子路由.
+	2、在组件内部使用<router-view>标签.
+	
+### 嵌套路由基础【children[]】
+	{
+		path: "/About",
+		component: () => import("../views/About.vue"),
+		children: [
+			{
+				//这个是设置路径，并且不需要加【/】
+				path:'aboutA',
+				component:aboutA,
+			},
+			{
+				path:'aboutB',
+				component:aboutB
+			}
+		]
+	}
+
+###  $route 和$router
+	route是路由信息对象，里面主要包含路由的一些基本信息，
+	包括name、meta、path、hash、query、params、fullPath、matched、redirectedFrom
+	
+	router是VueRouter的实例，包含了一些路由的跳转方法，钩子函数等
+	
+### 路由导航守卫的【beforeEach】主要用来监听监听路由的进入和离开的.
+		三个参数
+		to: 即将要进入的目标的路由对象.
+		from: 当前导航即将要离开的路由对象.
+		next: 调用该方法后, 才能进入下一个钩子.
+		
+	router.beforeEach((to, from, next) => {
+		to.xxx
+	  next()
+	})
+	
+	
+###	路由传参
+	创建新的组件Profile.vue
+	
+	
+## vuex
+### vuex常见存储内容
+	比如用户的登录状态、用户名称、头像、地理位置信息等等。 
+	比如商品的收藏、购物车中的物品等等。
+### vuex获取状态state
+	<h2>{{$store.state.name}}</h2>
+	$store: 表示定义的一个仓库
+	state:表示状态
+	name：state里的一个数据
+
+
+### vuex【mutations状态更新】修改state  
+### !!!mutations里不能写异步代码
+	1、在mutations里修改
+	mutations: {
+		notshin(state){
+		state.name = "我不是徐欣瑞"
+		}
+	}
+	2、触发修改事件
+	methods:{
+		change(){
+		this.$store.commit('notshin')
+		}
+	}
+### vuex【mutations状态更新】 修改state 【带参数】  
+	1、在mutations里修改
+	mutations: {
+		notshin(state,str){
+			state.name = "我不是徐欣瑞"+str
+		}
+	}
+	2、触发修改事件
+	methods:{
+		change(str){
+			this.$store.commit('notshin',str)
+		}
+	}
+### vuex【mutations状态更新】 修改state 完整版
+	methods:{
+		change(str){
+			this.$store.commit({
+				type:'notshin',    //mutations里的方法
+				str:"imnot"
+			})
+		}
+	}
+	mutations: {
+		notshin(state,playload){
+			state.name = "我不是徐欣瑞"+playload.str
+		}
+	}
+### vuex计算属性getters  
+	//计算属性里可以写过滤
+	1、计算
+	getters:{
+		allname(state){
+		return "imnot" +state.name 
+		}
+	}
+	2、获取
+	<h3>{{$store.getters.allname}}</h3>
+### vuex计算属性getters  【携带参数】
+	//计算属性里可以写过滤
+	1、计算
+	getters:{
+		allname(state){
+			return function(str){
+				return str +state.name 
+			}
+		}
+	}
+	2、获取
+	<h3>{{$store.getters.allname(str)}}</h3>
+
+### vuex中的异步操作actions 【such as change state】
+	1、vuex的actions
+	actions:{
+		change(context,str){
+			settimeout(function(){
+				context.$store.commit({type:'notshin', str})
+			},1000)
+		}
+	}
+	2、调用
+	this.$store.dispatch('change',str)
+
+### vuex的模块modules
+
+
+
+
 
 
 ### 父子访问refs  roots
@@ -13,8 +261,16 @@
 	
 	*子访问父
 	this.$root.$data.b
+	$parent
+	
+#### 父组件模板的所有东西都会在父级作用域内编译；
+#### 子组件模板的所有东西都会在子级作用域内编译
+#### 如果内容在子组件，希望父组件告诉我们如何展示
+#### 利用slot作用域插槽就可以了
+	
 	
 ### 插槽slot
+	【组件一般在实例化后，实例的标签内默认不能再添加元素。如有需要，那么需要加入slot】
 	<body>
 		<div id="app">
 			<hl>
@@ -89,10 +345,19 @@
 	</script>
 	
 ###谈谈你对MVVM开发模式的理解
-	MVVM分为Model、View、ViewModel三者。
-	Model 代表数据模型，数据和业务逻辑都在Model层中定义；
-	View 代表UI视图，负责数据的展示；
-	ViewModel 负责监听 Model 中数据的改变并且控制视图的更新，处理用户交互操作；
+	View层：
+	视图层
+	在我们前端开发中，通常就是DOM层。
+	主要的作用是给用户展示各种信息。
+	Model层：
+	数据层
+	数据可能是我们固定的死数据，更多的是来自我们服务器，从网络上请求下来的数据。
+	在我们计数器的案例中，就是后面抽取出来的obj，当然，里面的数据可能没有这么简单。
+	VueModel层：
+	视图模型层
+	视图模型层是View和Model沟通的桥梁。
+	一方面它实现了Data Binding，也就是数据绑定，将Model的改变实时的反应到View中
+	另一方面它实现了DOM Listener，也就是DOM监听，当DOM发生一些事件(点击、滚动、touch等)时，可以监听到，并在需要的情况下改变对应的Data。
 
 ### 数组方法filter【过滤】
 	const nums=[33,22,77,123,667,2,273]
@@ -114,13 +379,7 @@
 	},0)
 
 
-### 路由懒加载
-	const Home = resolve => require(['../components/Home.vue'], resolve);
-	const Home = () => import('../components/Home.vue')
-	{
-		path:'',
-		components:Home
-	}
+
 
 ### 异步组件
 	const Foo = () => Promise.resolve({
@@ -130,12 +389,6 @@
 ### 什么是渐进式框架
 	渐进式意味着可以将VUE作为应用的一部分嵌入其中
 	
-### VUE高级功能
-	解耦视图和数据
-	组件
-	路由
-	状态管理
-	虚拟dom
 	
 ### ES6导入导出	
 	import r from('/r')
@@ -231,8 +484,9 @@
 	点击子元素的时候，如果父元素也有事件，那么两个地方的事件都会触发。
 	当子元素添加了.stop的时候，就不会同时触发父级的事件
 	
-### 出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
+###  【非v-for！！】 dom出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
 	这个KEY给每个节点做了唯一的标识，这样vue会重新渲染
+### v-for中key的作用主要是为了高效的更新虚拟DOM。  每个数据拥有唯一的标识
 
 ### 数组splice()
 
@@ -518,7 +772,8 @@
 	  },
 	  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 	})
-	【如果data不是一个函数，那么当复用组件的时候，会导致数据改变同步】
+	
+### 每一个实例【组件】的构造函数【data】都是独立的，这样就不会导致数据公用
 	
 ### 局部基础组件
 
@@ -595,20 +850,7 @@
 		data.currentTarget.className='';
 	}
 	
-##路由
 
-	<router-view></router-view>
-	<router-link  to="/login?id=10" tag="span">登录</router-link>
-	<router-link  to="/reg/11">注册</router-link>
-	
-	router:new VueRouter({
-		routes:[
-			{path:'/',redirect:'/login'},//redirect重定向
-			{path:'/login',component:login},
-			{path:'/reg/:id',component:reg}
-		]
-		
-	})
 	
 #在 beforeDestroy 中销毁定时器
 
@@ -776,7 +1018,7 @@
 
 	
 	
-##网页从输入网址到渲染完成经历了哪些过程？
+###网页从输入网址到渲染完成经历了哪些过程？
 
 	输入网址；
 	发送到DNS服务器，并获取域名对应的web服务器对应的ip地址；
@@ -785,15 +1027,10 @@
 	web服务器响应请求，并返回指定url的数据（或错误信息，或重定向的新的url地址）；
 	浏览器下载web服务器返回的数据及解析html源文件；
 	生成DOM树，解析css和js，渲染页面，直至显示完成；
-	
-	
-#懒加载（按需加载路由）（常考）
 
-	webpack 中提供了 require.ensure()来实现按需加载。以前引入路由是通过 import 这样的方式引入，改为 const 定义的方式进行引入。
-	不进行页面按需加载引入方式：
-	import  home   from '../../common/home.vue'
-	进行页面按需加载的引入方式：
-	const  home = r => require.ensure( [], () => r (require('../../common/home.vue')))
+
+
+
 
 
 #active-class是哪个组件的属性？
