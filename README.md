@@ -330,6 +330,14 @@
 	4.query 传得参数都是显示在url 地址栏当中，而 params 传参不会显示在地址栏
 	
 ## vuex
+### 起步
+	export default new Vuex.Store({
+	  state: {数据},
+	  mutations: {修改数据},
+	  actions: {异步操作},
+	  modules: {模块},
+	  getters:{计算}
+	})
 ### vuex常见存储内容
 	比如用户的登录状态、用户名称、头像、地理位置信息等等。 
 	比如商品的收藏、购物车中的物品等等。
@@ -507,10 +515,11 @@
 		</div>
 	</div>
 	<script>
-		let kkkkk = { template:'<p>组件</p>'}
+		let jjjjj = { template:'<p>组件jjjjj</p>'}
+		let kkkkk = { template:'<p>组件kkkkk</p>'}
 	    let vm = new Vue({
 	        el:'#app',
-	        components:{kkkkk}
+	        components:{jjjjj,kkkkk}
 		})
 	</script>
 	
@@ -527,7 +536,7 @@
 	视图模型层
 	视图模型层是View和Model沟通的桥梁。
 	一方面它实现了Data Binding，也就是数据绑定，将Model的改变实时的反应到View中
-	另一方面它实现了DOM Listener，也就是DOM监听，当DOM发生一些事件(点击、滚动、touch等)时，可以监听到，并在需要的情况下改变对应的Data。
+	一方面它实现了DOM Listener，也就是DOM监听，当DOM发生一些事件(点击、滚动、touch等)时，可以监听到，并在需要的情况下改变对应的Data。
 
 ### 数组方法filter【过滤】
 	const nums=[33,22,77,123,667,2,273]
@@ -720,7 +729,7 @@
 	
 
 	
-#### this.$emit('')可以触发一个自定义的事件
+#### this.$emit('')可以触发一个自定义的事件  【!!!不是函数】
 	
 	1、子组件内创建一个方法：sendmsg();
 	2、子组件的sendmsg()方法内创建自定义方法this.$emit('函数名',参数)
@@ -833,16 +842,21 @@
 	但是反过来则不行。这样会防止从子组件意外改变父级组件的状态，从而导致你的应用的数据流向难以理解。
 
 ### 生命周期
-
-	创建created、载入mounted、更新updated、销毁destroyed
-	beforeCreate（创建前） 在数据观测和初始化事件还未开始。
-	created（创建后） 完成数据观测，属性和方法的运算，初始化事件，$el属性还没有显示出来。
-	beforeMount（载入前） 在挂载开始之前被调用，相关的render函数首次被调用。
-			实例已完成以下的配置：编译模板，把data里面的数据和模板生成html。
-			注意此时还没有挂载html到页面上。
-	mounted（载入后） 在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用。
-			实例已完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模板中的html渲染到html页面中。
-			此过程中进行ajax交互。
+	beforeCreate（创建前）
+		在数据观测和初始化事件还未开始,data、watcher、methods都还不存在，
+		但是$route已存在，可以根据路由信息进行重定向等操作。
+	created（创建后） 
+		在实例创建之后被调用。
+		该阶段可以访问data，使用watcher、events、methods，也就是说 
+		数据观测(data observer) 和event/watcher 事件配置 已完成。
+		但是此时dom还没有被挂载。该阶段允许执行http请求操作。
+	beforeMount（载入前） 
+		将HTML【类似组件也是组件】解析生成AST节点，再根据AST节点动态生成渲染函数。
+		相关render函数首次被调用(划重点)。
+			
+	mounted（载入后）
+		执行render函数生成虚拟dom，创建真实dom替换虚拟dom，并挂载到实例。可以操作dom，比如事件监听
+	
 	beforeUpdate（更新前） 在数据更新之前调用，发生在虚拟DOM重新渲染和打补丁之前。可以在该钩子中进一步地更改状态，
 			不会触发附加的重渲染过程。
 	updated（更新后） 在由于数据更改导致的虚拟DOM重新渲染和打补丁之后调用。
@@ -851,18 +865,8 @@
 	beforeDestroy（销毁前） 在实例销毁之前调用。实例仍然完全可用。
 	destroyed（销毁后） 在实例销毁之后调用。
 
-### Vue每个生命周期什么时候被调用
 
-	beforeCreate在实例初始化之后，数据观测(data observer)之前被调用
-	created实例已经创建完成之后被调用，在这一步，完成已完成以下的配置：数据观测(data observer)，
-		属性和方法的运算，watch/event事件回调，这里没有$el
-	beforeMount在挂载开始之前被调用：相关的render函数首次被调用
-	mounted el被创建的vm.$el替换，并挂载到实例上去之后调用该钩子
-	beforeUpdate数据更新时调用，发生虚拟DOM重新渲染和补丁之前
-	updated由于数据更改导致的虚拟DOM重新渲染和打补丁，在这之后调用该钩子
-	beforeDestory实例销毁之前调用，在这一步，实例仍然完全可用
-	destroyedVue实例销毁后调用，调用后，Vu实例指示的所有东西都会解绑定，
-		所有的事件监听器会被移除，所有的子实例也会被销毁，该钩子在服务器端渲染期间不被调用
+	
 		
 ### 在哪个生命周期内调用异步请求？
 
@@ -880,11 +884,6 @@
 	第一次加载首页耗时相对长一些；
 	不可以使用浏览器的导航按钮需要自行实现前进、后退。
 
-
-
-### key的作用
-
-	保证项和值对应
 	
 ### v-on 绑定多个方法
 
@@ -943,27 +942,8 @@
 	  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 	})
 	
-### 每一个实例【组件】的构造函数【data】都是独立的，这样就不会导致数据公用
-	
-### 局部基础组件
 
-	components: {
-	    'runoob':{
-			  template: '<h1>自定义组件!</h1>'
-			}
-	  }
-	
-	
-### 组件通过 Props 向子组件传递数据
 
-	 <child v-bind:title="data"></child> 
-	
-	Vue.component('child', {
-		  props: ['title'],
-		  template: '<h3>{{title}}</h3>'
-	})
-	
-	
 		
 ### :todo循环组件数据
 
