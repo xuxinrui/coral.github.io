@@ -87,6 +87,9 @@
 	Vue-Router 利用了浏览器自身的hash 模式和 history 模式的特性来实现前端路由（通过调用浏览器提供的接口）。
 	选n。这样打包出来丢到服务器上可以直接使用了，后期要用的话，也可以自己再开起来。
 	选yes的话需要服务器那边再进行设置。
+	hash:location.href   锚点 
+	history：history.go
+
 
 ### 脚手架配置之
 	如果在之后的开发中，你依然使用template，就需要选择Runtime-Compiler
@@ -101,6 +104,7 @@
 	普通用法
 	const vm = new Vue({
 		el:"#app",
+			//这里的参数h是一个方法
 		render: (h) => {
 			return h('h1',{class:"h"},['wobushi'])
 		}
@@ -129,6 +133,14 @@
 		]
 		
 	})
+
+###  $route 和$router
+	route是路由信息对象，里面主要包含路由的一些基本信息，
+	包括name、meta、path、hash、query、params、fullPath、matched、redirectedFrom
+	
+	router是VueRouter的实例，包含了一些路由的跳转方法，钩子函数等
+	
+
 
 ### 路由的默认路径【redirect】
 	const routes = [
@@ -202,12 +214,7 @@
 		]
 	}
 
-###  $route 和$router
-	route是路由信息对象，里面主要包含路由的一些基本信息，
-	包括name、meta、path、hash、query、params、fullPath、matched、redirectedFrom
-	
-	router是VueRouter的实例，包含了一些路由的跳转方法，钩子函数等
-	
+
 ### 路由导航守卫的【beforeEach】主要用来监听监听路由的进入和离开的.
 		三个参数
 		to: 即将要进入的目标的路由对象.
