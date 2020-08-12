@@ -315,8 +315,19 @@
 	路由配置: 不需要做任何修改
 	{path: '/c', name: 'C', component: C}
 
-	
-	
+### VueRouter之query与params两种传参区别
+	query语法：
+	this.$router.push({path:"地址",query:{id:"123"}}); 这是传递参数
+	this.$route.query.id； 这是接受参数
+	params语法：
+	this.$router.push({name:"地址",params:{id:"123"}}); 这是传递参数
+	this.$route.params.id; 这是接受参数
+	以上就是这两种方法得语法，那大家也能从中看出一点区别：
+	1.首先就是写法得不同，query 得写法是 用 path 来编写传参地址，
+		而 params 得写法是用 name 来编写传参地址
+	2.接收方法不同， 一个用 query 来接收， 一个用 params 接收 ，总结就是谁发得 谁去接收
+	3.query 在刷新页面得时候参数不会消失，而 params 刷新页面得时候会参数消失，可以考虑本地存储解决
+	4.query 传得参数都是显示在url 地址栏当中，而 params 传参不会显示在地址栏
 	
 ## vuex
 ### vuex常见存储内容
