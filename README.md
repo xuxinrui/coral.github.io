@@ -66,6 +66,19 @@
 				console.log(res);
 				return res+"3"
 			})
+### promise all处理并发
+	const p = new Promise(function(resolve, reject) {
+				resolve(123)
+			})
+	const q = new Promise(function(resolve, reject) {
+				resolve(456)
+			})
+
+	Promise.all([p, q]).then((res) => {
+	    console.log(res);
+		//输出[123, 456]
+	});	
+			
 ## vue脚手架
 	1、安装node
 	2、安装webpack ：npm install webpack -g
@@ -700,11 +713,6 @@
 	
 	
 
-
-	
-
-	
-	
 		
 
 #### 样式绑定的区别   [值] {blooean} 
@@ -969,7 +977,7 @@
 	unbind: 一旦指令被移除时触发。
 	
 	
-##数组删除
+### 数组删除
 
 	<tr v-for="(item,index) in arr_obj" :key="item.a">
 		<td>{{item.a}}</td>
@@ -991,7 +999,7 @@
 		this.arr_obj.splice(id,1)
 	}
 	
-##获取dom   get($event)
+### 获取dom   get($event)
 
 	<div @click="get($event)"></div>
 	
@@ -1002,20 +1010,12 @@
 	
 
 	
-#在 beforeDestroy 中销毁定时器
+### 在 beforeDestroy 中销毁定时器
 
-##访问子组件数据$refs
 
-	<HelloWorld ref="hello" :message="message"></HelloWorld>
-	this.$refs.hello.属性  this.$refs.hello.方法
-	
-	
-#子组件如何主动获取父组件中的数据
 
-	this.$parent.属性
-	
 
-##双向绑定原理
+### 双向绑定原理
 
 	当你把一个普通的 JavaScript 对象传入 Vue 实例作为 data 选项，Vue 将遍历此对象所有的 property，
 	并使用 Object.defineProperty 把这些 property 全部转为 getter/setter。
@@ -1023,12 +1023,12 @@
 	默认Vue在初始化数据时，会给data中的属性使用Object.defineProperty重新定义所有属性，
 	当页面到对应属性时，会进行依赖收集(收集当前组件中的watcher)如果属性发生变化会通知相关依赖进行更新操作
 
-##vue和react的区别
+### vue和react的区别
 
 	组件写法不一样, React推荐的做法是 JSX + inline style, 
 	Vue推荐的做法是webpack+vue-loader的单文件组件格式,即html,css,jd写在同一个文件;
 
-##延迟回调$nextTick
+### 延迟回调$nextTick
 	vue中的nextTick主要用于处理数据动态变化后，DOM还未及时更新的问题，用nextTick就可以获取数据更新后最新DOM的变化
 	有些时候在改变数据后立即要对dom进行操作，此时获取到的dom仍是获取到的是数据刷新前的dom
 	
@@ -1041,7 +1041,7 @@
 		第二种：在使用某个第三方插件时 ，希望在vue生成的某些dom动态发生变化时重新应用该插件，
 		也会用到该方法，这时候就需要在 $nextTick 的回调函数中执行重新应用插件的方法，例如:应用滚动插件better-scroll时
 		
-		monted(){
+		mounted(){
 			this.$nextTick(() => 
 				//这里才可以
 			})
@@ -1545,12 +1545,27 @@
 		const声明之后必须赋值，否则会报错const定义不可变的量，改变了就会报错
 		const和let一样不会与window相映射、支持块级作用域、在声明的上面访问变量会报错
 
-#箭头函数
+### 箭头函数
 	基础
 	let f=(v)=>v;
 	嵌套：
 	let f=(v)=>({c:(vv)=>v+vv});
 
+### 原型链基础
+	//构造函数用prototype指向原型
+	//实例用__proto__指向原型
+	//原型用constructor指向构造函数
+
+	const c = function(a,b){
+		this.a = a+22
+		this.b = b
+	}
+	console.log(c.prototype.dd = 'dddd');
+
+	const cc = new c(22,33);
+	console.log(cc.a);
+	console.log(cc.__proto__.ee = 'eee')
+	console.log(cc.__proto__.constructor.prototype.ff = 'fff')
 
 ### vm.$set() 解决对象新增属性不能响应的问题
 	Vue.set( target, propertyName/index, value )
@@ -1596,3 +1611,6 @@
 	媒体查询
 	CSS初始化
 	fastclick可以解决在手机上点击事件的300ms延迟
+	
+	
+	
