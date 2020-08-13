@@ -1,5 +1,10 @@
-## scss
-## vue网络请求
+#### *scss*
+
+#### *TypeScript*
+
+#### *HTTP*
+
+#### *vue网络请求*
 
 ## 闭包
 
@@ -32,8 +37,23 @@
 
 ### 原型链的概念
 
-```
-当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，于是就这样一直找下去，也就是我们平时所说的原型链的概念。
+```javascript
+//当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，于是就这样一直找下去，也就是我们平时所说的原型链的概念。
+
+function a(){
+	this.aname= 'aname';
+}
+function b(){
+	this.bname= 'bname';
+}
+b.prototype = new a()
+
+function c(){
+	this.cname= 'cname';
+}
+c.prototype = new b()
+
+console.log(new c().aname)//从才开始找，再找b，再找a
 ```
 
 ### 继承
@@ -633,21 +653,21 @@ const Home = () => import('../components/Home.vue')
 ​		</template>
 ​	</body>
 ​	
-	<script type="text/javascript">
-		let vm  = new Vue({
-			el:"#app",
-			components:{
-				hl:{
-					template:"#t1",
-					data(){
-						return{
-							names:['武器','佐伊','妖姬']
-						}
-					}
-				}
-			}
-		})
-	</script>
+​	<script type="text/javascript">
+​		let vm  = new Vue({
+​			el:"#app",
+​			components:{
+​				hl:{
+​					template:"#t1",
+​					data(){
+​						return{
+​							names:['武器','佐伊','妖姬']
+​						}
+​					}
+​				}
+​			}
+​		})
+​	</script>
 
 ### Object.defineProperty 
 	Object.defineProperty 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
@@ -1351,9 +1371,6 @@ const Home = () => import('../components/Home.vue')
 
 
 
-#active-class是哪个组件的属性？
-
-  vue-router模块的router-link组件。
 
 
 #Vue子组件调用父组件的方法
@@ -1363,87 +1380,79 @@ const Home = () => import('../components/Home.vue')
 
 
 
-#split('').reverse().join('')
+### split('').reverse().join('')
 
+### this 指向对象，作为普通函数调用的时候，就指向全局了
 
-##this 指向对象，作为普通函数调用的时候，就指向全局了
+### console.log(array1.push.apply(array1, array2)); 数组合并
 
-#console.log(array1.push.apply(array1, array2)); 数组合并
-	
-#判断一个字符串中出现次数最多的字符，统计这个次数
+### 判断一个字符串中出现次数最多的字符，统计这个次数
 
-	将字符串转化数组
-	创建一个对象
-	遍历数组，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
-	定义两个变量存储字符值，字符出现的字数
-	var str = 'abaasdffggghhjjkkgfddsssss3444343';
-	// 1.将字符串转换成数组
-	var newArr = str.split("");
-	// 2.创建一个对象
-	var json = {};
-	// 3. 所有字母出现的次数，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
-	for(var i = 0; i < newArr.length; i++){
-
-
-​	
-​		  // 类似：json : { ‘a’: 3, ’b’: 1 }
-​		  if(json[newArr[i]]){
-​			 json[newArr[i]] +=1;
-​		  } else {
-​			   json[newArr[i]] = 1;
-​		  }
-​	}
-​	// 4 定义两个变量存储字符值，字符出现的字数
-​	var num = 0 ; //次数
-​	var element = ""; //最多的项
-​	for(var k in json){
-​	   if(json[k] > num){
-​		 num = json[k];
-​		 element = k ;
-​	   }
-​	}
-​	console.log("出现次数："+num +"最多的字符："+ element);
-
+```javascript
+//将字符串转化数组
+//创建一个对象
+//遍历数组，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
+//定义两个变量存储字符值，字符出现的字数
+var str = 'abaasdffggghhjjkkgfddsssss3444343';
+// 1.将字符串转换成数组
+var newArr = str.split("");
+// 2.创建一个对象
+var json = {};
+// 3. 所有字母出现的次数，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
+for(var i = 0; i < newArr.length; i++){
+// 类似：json : { ‘a’: 3, ’b’: 1 }
+		  if(json[newArr[i]]){
+			 json[newArr[i]] +=1;
+		  } else {
+			   json[newArr[i]] = 1;
+		  }
+	}
+	// 4 定义两个变量存储字符值，字符出现的字数
+	var num = 0 ; //次数
+	var element = ""; //最多的项
+	for(var k in json){
+	   if(json[k] > num){
+		 num = json[k];
+		 element = k ;
+	   }
+	}
+	console.log("出现次数："+num +"最多的字符："+ element);
+```
 
 
 
-#常见的浏览器内核有哪些 ？
+### 常见的浏览器内核有哪些 ？
 
 	Trident 内核：IE, 360，搜狗浏览器 MaxThon、TT、The World,等。[又称 MSHTML]
 	Gecko 内核：火狐，FF，MozillaSuite / SeaMonkey 等
 	Presto 内核：Opera7 及以上。[Opera 内核原为：Presto，现为：Blink]
 	Webkit 内核：Safari，Chrome 等。 [ Chrome 的：Blink（WebKit 的分支）]
 
-
-#事件委托是什么
+### 事件委托是什么
 
 	答案: 利用事件冒泡的原理，让自己的所触发的事件，让他的父元素代替执行
-#如何阻止默认事件
+### 如何阻止默认事件
 
 	(1)return false；
 	(2) ev.preventDefault();
-#https
+### https
 
 	https是HTTP运行在SSL/TLS之上，SSL/TLS运行在TCP之上
 
-
-#事件绑定
+### 事件绑定
 
 	btn4.addEventListener("click",hello1);
 
-#清除循环
+### 清除循环
 
 	clearInterval();
-#xss 跨站脚本攻击
+### xss 跨站脚本攻击
 
-#window.onload方法是在网页中所有的元素(包括元素的所有关联文件)
+### window.onload方法是在网页中所有的元素(包括元素的所有关联文件)
 
-#0.1+0.2 ===0.30000000000000004
+### 0.1+0.2 ===0.30000000000000004
 
-
-
-#apply、call、bind
-	
+### apply、call、bind
 
 	apply 、 call 、bind 三者第一个参数都是 this 要指向的对象，也就是想指定的上下文；
 	apply 、 call 、bind 三者都可以利用后续参数传参；
@@ -1455,45 +1464,27 @@ const Home = () => import('../components/Home.vue')
 	apply(thisArg, [argsArray])
 	call(thisArg, arg1, arg2, …)
 
-
-#盒子模型
+### 盒子模型
 
 	在IE盒子模型中，width表示content+padding+border这三个部分的宽度
 	在标准的盒子模型中，width指content部分的宽度
 
-#水平居中
+### 水平居中
 
 	行内元素: text-align: center
 	块级元素: margin: 0 auto
 	position:absolute +left:50%+ transform:translateX(-50%)
 	display:flex + justify-content: center
-#垂直居中
+### 垂直居中
 
 	设置line-height 等于height
 	position：absolute +top:50%+ transform:translateY(-50%)
 	display:flex + align-items: center /*垂直对齐方式*/
 	display:table+display:table-cell + vertical-align: middle;
 
+### 
 
-#初始化样式
-
-	body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend
-	,button,input,textarea,th,td{margin:0;padding:0;}
-	body,button,input,select,textarea{font:12px/1.5tahoma,arial,\5b8b\4f53;}
-	h1,h2,h3,h4,h5,h6{font-size:100%;}
-	address,cite,dfn,em,var{font-style:normal;}
-	code,kbd,pre,samp{font-family:couriernew,courier,monospace;}
-	small{font-size:12px;}
-	ul,ol{list-style:none;}
-	a{text-decoration:none;}
-	a:hover{text-decoration:underline;}
-	sup{vertical-align:text-top;}
-	sub{vertical-align:text-bottom;}
-	legend{color:#000;}
-	fieldset,img{border:0;}
-	button,input,select,textarea{font-size:100%;}
-	table{border-collapse:collapse;border-spacing:0;}
-#多行文本溢出
+### 多行文本溢出
 
 	p {
 	  position: relative;
@@ -1505,30 +1496,35 @@ const Home = () => import('../components/Home.vue')
 		  text-overflow:ellipsis; 
 	}
 
-#flex
+### flex
 
-	.box{
-	  display: -webkit-flex; /* Safari */
-	  display: flex;
-	  flex-direction:flex-direction: row | row-reverse | column | column-reverse; /*主轴的方向*/
-	  flex-wrap: nowrap | wrap | wrap-reverse;/*换行方式*/
-	  flex-flow /*以上的结合	*/
+```css
+.box{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction:flex-direction: row | row-reverse | column | column-reverse; 
+  /*主轴的方向*/
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  /*换行方式*/
+  flex-flow 
+  /*以上的结合	*/ 
+  justify-content: flex-start | flex-end | center | space-between | space-around;
+  /*水平对齐方式*/
+  align-items: flex-start | flex-end | center | baseline | stretch;
+  /*垂直对齐方式*/
+  align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+  /*出现多行时的垂直对齐方式*/
+}
+	
+```
 
-
-​	  
-​	  justify-content: flex-start | flex-end | center | space-between | space-around;/*水平对齐方式*/
-​	  align-items: flex-start | flex-end | center | baseline | stretch;/*垂直对齐方式*/
-​	  align-content: flex-start | flex-end | center | space-between | space-around | stretch;/*出现多行时的垂直对齐方式*/
-​	}
-​	
 	.item {
 	  
 	  flex-grow: <number>; /* default 0 */  /*子元素放大比例*/
 	}
 
+### ajax
 
-#ajax
-	
 	function loadXMLDoc()
 	{
 		var xmlhttp='';
@@ -1555,7 +1551,7 @@ const Home = () => import('../components/Home.vue')
 
 
 
-#构造函数
+### 构造函数
 
 	用于创建对象的函数，叫做构造函数。
 	和普通函数不同的是，构造函数调用后会得到一个对象
@@ -1563,8 +1559,7 @@ const Home = () => import('../components/Home.vue')
 	相比于对象来说，构造函数可以携带参数
 
 
-​	
-#原型链
+### 原型链
 
 	实例对象通过 __proto__ 得到实例对象的原型对象
 	构造函数通过 prototype 扩展属性
@@ -1574,8 +1569,7 @@ const Home = () => import('../components/Home.vue')
 		Animal.prototype.__proto__ === Object.prototype  
 		Object.prototype.__proto__ === null 
 
-
-#继承属性
+### 继承属性
 
 	function Person (name, age) {
 	    this.name = name
@@ -1589,14 +1583,14 @@ const Home = () => import('../components/Home.vue')
 	    Person.call(this, name, age)
 	    this.subject = subject
 	}
-#继承方法 Object.create
+### 继承方法 Object.create
 
 	Teacher.prototype = Object.create(Person.prototype)
 	Teacher.prototype.constructor = Teacher
 
-#hasOwnProperty 查询属性
+### hasOwnProperty 查询属性
 
-#字符串方法
+### 字符串方法
 
 	indexOf() 方法返回字符串中指定文本首次出现的索引（位置）
 	：提取字符串	
@@ -1607,30 +1601,13 @@ const Home = () => import('../components/Home.vue')
 	charAt() 方法返回字符串中指定下标（位置）的字符串：
 	split() 将字符串转换为数组：
 
-#数组去重
+### 数组去重
 
 	if(新数组.indexOf(旧数组[i]) == -1){
 	    新数组.push(旧数组[i]);
 	}			
 
-### 添加排序函数的sort()
-	<script type="text/javascript">
-		function sortNumber(a,b)
-		{
-		    return a - b
-		}
-		var arr = new Array(6)
-		arr[0] = "10"
-		arr[1] = "5"
-		arr[2] = "40"
-		arr[3] = "25"
-		arr[4] = "1000"
-		arr[5] = "1"
-		document.write(arr + "<br />")
-		document.write(arr.sort(sortNumber))
-	</script>
-
-#沉睡排序法
+### 沉睡排序法
 
 	var arr = [1,55,4,7,88,75,4];
 	arr.forEach(function(num){
@@ -1638,7 +1615,7 @@ const Home = () => import('../components/Home.vue')
 			console.log(num)
 		},num);
 	})
-#冒泡排序
+### 冒泡排序
 
 	let arr = ['445', 1223, 4590, 1, 3];
 	function paixu(arrr) {
@@ -1694,12 +1671,15 @@ const Home = () => import('../components/Home.vue')
 	  }
 	}
 	arr[3]();
+	打印出5  应为i在for里面不是私有变量 
 
 #outline: none;
 
 ### let / const
-		var声明变量可以重复声明，而let不可以重复声明
 		var是不受限于块级的，而let是受限于块级
+			var只受函数封闭，let被所有块级封闭
+	
+		var声明变量可以重复声明，而let不可以重复声明
 		var会与window相映射（会挂一个属性），而let不与window相映射
 		var可以在声明的上面访问变量，而let有暂存死区，在声明的上面访问变量会报错
 		const声明之后必须赋值，否则会报错const定义不可变的量，改变了就会报错
@@ -1726,33 +1706,6 @@ const Home = () => import('../components/Home.vue')
 	console.log(cc.a);
 	console.log(cc.__proto__.ee = 'eee')
 	console.log(cc.__proto__.constructor.prototype.ff = 'fff')
-
-### vm.$set() 解决对象新增属性不能响应的问题
-	Vue.set( target, propertyName/index, value )
-
-
-​	
-​	
-#es6
-#vue
-#less
-#TypeScript
-#html
-#jquery
-#sql
-#ps
-#webpack
-#java
-#mysql
-#HTTP
-#week
-#css
-#js
-
-
-
-### 声明式编程    命令式编程
-### vscode
 
 ## 移动端兼容
 	3.h5底部输入框被键盘遮挡问题h5页面有个很蛋疼的问题就是，当输入框在最底部，点击软键盘后输入框会被遮挡。可采用如下方式解决var oHeight = $(document).height(); //浏览器当前的高度
