@@ -1220,16 +1220,15 @@ const Home = () => import('../components/Home.vue')
 
 ​	
 
-
-#怎么解决vue动态设置img的src不生效的问题
+#### 怎么解决vue动态设置img的src不生效的问题
 
 	 logo:require("./../assets/images/logo.png")
 
-#Vue3.0你知道有哪些改进
+#### Vue3.0你知道有哪些改进
 
 	Vue3 中响应式数据原理改成proxy
 
-#对 Vue 项目进行哪些优化？
+#### 对 Vue 项目进行哪些优化？
 
 	v-if 和 v-show 区分使用场景
 	computed 和watch 区分使用场景
@@ -1239,12 +1238,12 @@ const Home = () => import('../components/Home.vue')
 	路由懒加载
 	第三方插件的按需引入
 
-#Vue中v-html会导致哪些问题
+#### Vue中v-html会导致哪些问题
 
 	可能会导致xss攻击
 	v-html会替换掉标签内部的子元素
 
-#Vue的渲染过程
+#### Vue的渲染过程
 
 	1、把模板编译为render函数
 	2、实例进行挂载, 根据根节点render函数的调用，递归的生成虚拟dom
@@ -1252,14 +1251,12 @@ const Home = () => import('../components/Home.vue')
 	4、组件内部data发生变化，组件和子组件引用data作为props重新调用render函数，生成虚拟dom, 返回到步骤3
 
 
-​	
-#组件data是函数的原因
+#### 组件data是函数的原因
 
 	因为组件是用来复用的，JS里对象是引用关系，这样作用域没有隔离，而new Vue的实例，是不会被复用的，因此不存在引用对象问题
 
 
-​	
-#如何比较React和Vue
+#### 如何比较React和Vue
 
 	监听数据变化的实现原理不同：
 	
@@ -1310,13 +1307,13 @@ const Home = () => import('../components/Home.vue')
 
 
 ​	
-​	
-#Vue中相同逻辑如何抽离
+
+#### Vue中相同逻辑如何抽离
 
 	使用混入
 	Vue.mixin用法给组件每个生命周期，函数等都混入一些公共逻辑	
 
-#为什么v-for和v-if不能连用
+#### 为什么v-for和v-if不能连用
 
 	当 v-for 和 v-if 处于同一个节点时，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。
 	如果要遍历的数组很大，而真正要展示的数据很少时，这将造成很大的性能浪费。 这种场景建议使用 computed，先对数据进行过滤
@@ -1327,8 +1324,7 @@ const Home = () => import('../components/Home.vue')
 ​	
 
 
-​	
-#prop 验证，和默认值
+#### prop 验证，和默认值
 
 	我们在父组件给子组件传值得时候，为了避免不必要的错误，可以给prop的值进行类型设定，
 	让父组件给子组件传值得时候，更加准确，prop可以传一个数字，一个布尔值，一个数组，一个对象，
@@ -1342,21 +1338,22 @@ const Home = () => import('../components/Home.vue')
 		}
 	}
 
-#如何让CSS只在当前组件中起作用？
-	将当前组件的style修改为style scoped
-	
-#<keep-alive></keep-alive>的作用是什么？
+####  如何让CSS只在当前组件中起作用？
+​	将当前组件的style修改为style scoped
+​	
+
+#### <keep-alive></keep-alive>的作用是什么？
 
 	<keep-alive></keep-alive> 包裹动态组件时，会缓存不活动的组件实例,主要用于保留组件状态或避免重新渲染。
 
-##vue.js的两个核心是什么？
+#### vue.js的两个核心是什么？
 
 	数据驱动、组件系统
 
 
 ​	
-​	
-###网页从输入网址到渲染完成经历了哪些过程？
+
+### 网页从输入网址到渲染完成经历了哪些过程？
 
 	输入网址；
 	发送到DNS服务器，并获取域名对应的web服务器对应的ip地址；
@@ -1372,8 +1369,7 @@ const Home = () => import('../components/Home.vue')
 
 
 
-
-#Vue子组件调用父组件的方法
+### Vue子组件调用父组件的方法
 
 	第一种方法是直接在子组件中通过this.$parent.event来调用父组件的方法
 	第二种方法是在子组件里用$emit向父组件触发一个事件，父组件监听这个事件就行了。
@@ -1849,7 +1845,6 @@ background: none;
 -webkit-tap-highlight-color: transparent;
 }
 ```
-
 
 ### fastclick解决在手机上点击事件的300ms延迟
 
