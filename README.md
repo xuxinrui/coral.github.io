@@ -1,89 +1,215 @@
 ## scss
 ## vue网络请求
 
+## 闭包
+
+### 闭包基础代码
+
+```javascript
+	function a(){
+		     var i=0;
+		     function b(){
+		         alert(++i);
+		     }
+		     return b;
+		}
+	var c = a();
+	c();//外部的变量
+```
+### 闭包的理解
+
+```
+当我们需要在模块中定义一些变量，并希望这些变量一直保存在内存中但又不会 “污染” 全局的变量时，就可以用闭包来定义这个模块。
+```
+
+## 原型和原型链
+
+### 原型的概念
+
+```
+每个对象都会在其内部初始化一个属性，就是prototype(原型)。通俗的说，原型就是一个模板，更准确的说是一个对象模板
+```
+
+### 原型链的概念
+
+```
+当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，于是就这样一直找下去，也就是我们平时所说的原型链的概念。
+```
+
+### 继承
+
+#### 原型链继承
+
+```javascript
+//父构造函数
+function f(){
+	this.fname = '爸爸'
+}
+//孩子构造函数
+function c1(){
+	this.c1name = 'c1孩子'
+}
+//孩子的原型上添加父亲的实例
+c1.prototype = new f();
+//将孩子实例一下，看看孩子里有没有继承爸爸
+let c1s = new c1();
+//打印c1s.fname，最后喊出了“爸爸”
+```
+#### call继承
+
+```javascript
+//父构造函数
+function f(xx){
+	this.fname = '爸爸'+xx;
+}
+//孩子构造函数
+function c1(){
+	//相当于f收了一个孩子，叫做c1【这里的this就是c1】
+	f.call(this,'我修改了爸爸')
+}
+```
+
+#### 原型继承
+
+```javascript
+//父构造函数
+function Person(){
+	this.name = '爸爸';
+}
+// 先封装一个函数容器，用来承载继承的原型和输出对象
+function object() {
+	function F() {}
+	F.prototype = new Person();
+	return new F();
+}
+
+object().name
+```
+#### 寄生组合继承【没时间看】
+
+```javascript
+//父构造函数
+function Person(){
+	this.name = '爸爸';
+}// 寄生
+function object(obj) {
+	function F(){}
+	F.prototype = obj;
+	return new F();
+}
+// object是F实例的另一种表示方法
+var obj = object(Person.prototype);
+// obj实例（F实例）的原型继承了父类函数的原型
+// 上述更像是原型链继承，只不过只继承了原型属性
+
+// 组合
+function Sub() {
+	this.age = 100;
+	Person.call(this); // 这个继承了父类构造函数的属性
+} // 解决了组合式两次调用构造函数属性的特点
+
+// 重点
+Sub.prototype = obj;
+console.log(Sub.prototype.constructor); // Person
+obj.constructor = Sub; // 一定要修复实例
+console.log(Sub.prototype.constructor); // Sub
+var sub1 = new Sub();
+// Sub实例就继承了构造函数属性，父类实例，object的函数属性
+console.log(sub1.job); // frontend
+console.log(sub1 instanceof Person); // true
+```
 
 
 ## promise
+
 		Promise 是异步编程的一种解决方案
 ### Promise对象有以下三个特点
 		1、对象的状态不受外界影响
 		2、一旦状态改变，就不会再变
 		3、Promise也有一些缺点。首先，无法取消Promise，一旦新建它就会立即执行，无法中途取消。
-		
+
 ### promise基本用法
 
-		const promise = new Promise(function(resolve, reject) {
-		  // ... some code
-		
-		  if (/* 异步操作成功 */){
-		    resolve(value);
-		  } else {
-		    reject(error);
-		  }
-		});
-		resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”
-		在异步操作成功时调用，并将异步操作的结果，【作为参数传递出去】
+```javascript
+	const promise = new Promise(function(resolve, reject) {
+	  // ... some code
+	
+	  if (/* 异步操作成功 */){
+	    resolve(value);
+	  } else {
+	    reject(error);
+	  }
+	});
+	//resolve函数的作用是，将Promise对象的状态从“未完成”变为“成功”
+	//在异步操作成功时调用，并将异步操作的结果，【作为参数传递出去】
+```
 ### Promise then
-		Promise实例生成以后，可以用then方法分别指定resolved状态和rejected状态的回调函数。
-		const p = new Promise(function(resolve, reject) {
-		  if(0){
-				resolve(123)
-			}else{
-				reject(456)
-			}
-		}).then(
-			res=>{},
-			err=>{console.log(err)}
-		)
-		
-		备注：catch也可以
+```javascript
+	Promise实例生成以后，可以用then方法分别指定resolved状态和rejected状态的回调函数。
+	const p = new Promise(function(resolve, reject) {
+	  if(0){
+			resolve(123)
+		}else{
+			reject(456)
+		}
+	}).then(
+		res=>{},
+		err=>{console.log(err)}
+	)
+	
+	//备注：catch也可以
+```
  ### promise的三个状态
 		pending：等待状态，比如正在进行网络请求，或者定时器没有到时间。
 		fulfill：满足状态，当我们主动回调了resolve时，就处于该状态，并且会回调.then()
 		reject：拒绝状态，当我们主动回调了reject时，就处于该状态，并且会回调.catch()
-		
- ### promise链式调用
-		1、基础链式调用
-		const p = new Promise(function(resolve, reject) {
-				resolve(1)
-		}).then(res=>{
-				console.log(res);
-				return Promise.resolve(res+"3")
-			}).then(res=>{
-				console.log(res);
-				return Promise.resolve(res+"4")
-			}).then(res=>{
-				console.log(res);
-				return Promise.resolve(res+"5")
-			})
-		2、链式调用简写
-		const p = new Promise(function(resolve, reject) {
-				resolve(1)
-		}).then(res=>{
-				console.log(res);
-				return res+"2"
-			}).then(res=>{
-				console.log(res);
-				return res+"3"
-			})
-### promise all处理并发
-	const p = new Promise(function(resolve, reject) {
-				resolve(123)
-			})
-	const q = new Promise(function(resolve, reject) {
-				resolve(456)
-			})
 
-	Promise.all([p, q]).then((res) => {
-	    console.log(res);
-		//输出[123, 456]
-	});	
-			
+ ### promise链式调用
+```javascript
+	//基础链式调用
+	const p = new Promise(function(resolve, reject) {
+			resolve(1)
+	}).then(res=>{
+			console.log(res);
+			return Promise.resolve(res+"3")
+		}).then(res=>{
+			console.log(res);
+			return Promise.resolve(res+"4")
+		}).then(res=>{
+			console.log(res);
+			return Promise.resolve(res+"5")
+		})
+	//链式调用简写
+	const p = new Promise(function(resolve, reject) {
+			resolve(1)
+	}).then(res=>{
+			console.log(res);
+			return res+"2"
+		}).then(res=>{
+			console.log(res);
+			return res+"3"
+		})
+```
+### promise all处理并发
+```javascript
+const p = new Promise(function(resolve, reject) {
+			resolve(123)
+		})
+const q = new Promise(function(resolve, reject) {
+			resolve(456)
+		})
+
+Promise.all([p, q]).then((res) => {
+    console.log(res);
+	//输出[123, 456]
+});	
+```
+
 ## vue脚手架
 	1、安装node
 	2、安装webpack ：npm install webpack -g
 	3、安装vue cli
-
+	
 	? Check the features needed for your project: (Press <space> to select, <a> to toggle all, <i> to invert selection)
 	>(* ) Babel //转码器，可以将ES6代码转为ES5代码，从而在现有环境执行。 
 	( ) TypeScript// TypeScript是一个JavaScript（后缀.js）的超集（后缀.ts）包含并扩展了 JavaScript 的语法，
@@ -95,7 +221,7 @@
 	(* ) Linter / Formatter // 代码风格检查和格式化（如：ESlint）
 	( ) Unit Testing // 单元测试（unit tests）
 	( ) E2E Testing // e2e（end to end） 测试
-
+	
 	Use history mode for router? (Requires proper server setup for index fallback in production)  
 	Vue-Router 利用了浏览器自身的hash 模式和 history 模式的特性来实现前端路由（通过调用浏览器提供的接口）。
 	选n。这样打包出来丢到服务器上可以直接使用了，后期要用的话，也可以自己再开起来。
@@ -114,72 +240,82 @@
 	如果安装了vue-template-conpiler
 	【render函数】------>【虚拟dom】------->UI
 ## render函数
-	普通用法
-	const vm = new Vue({
-		el:"#app",
-			//这里的参数h是一个方法
-		render: (h) => {
-			return h('h1',{class:"h"},['wobushi'])
-		}
-	})
-	嵌套：
-	const vm = new Vue({
-		el:"#app",
-		render: (h) => {
-			return h('h1',{class:"h"},['wobushi'h('h2',[xuxinrui])])
-		}
-	})
+```javascript
+//普通用法
+const vm = new Vue({
+	el:"#app",
+		//这里的参数h是一个方法
+	render: (h) => {
+		return h('h1',{class:"h"},['wobushi'])
+	}
+})
+//嵌套：
+const vm = new Vue({
+	el:"#app",
+	render: (h) => {
+		return h('h1',{class:"h"},['wobushi'h('h2',[xuxinrui])])
+	}
+})
+```
 
 
 ## 路由
 ### 路由基础
 
-	<router-view></router-view>
-	<router-link  to="/login?id=10" tag="span">登录</router-link>
-	<router-link  to="/reg/11">注册</router-link>
+```javascript
+<router-view></router-view>
+<router-link  to="/login?id=10" tag="span">登录</router-link>
+<router-link  to="/reg/11">注册</router-link>
+
+router:new VueRouter({
+	routes:[
+		{path:'/',redirect:'/login'},//redirect重定向
+		{path:'/login',component:login},
+		{path:'/reg/:id',component:reg}
+	]
 	
-	router:new VueRouter({
-		routes:[
-			{path:'/',redirect:'/login'},//redirect重定向
-			{path:'/login',component:login},
-			{path:'/reg/:id',component:reg}
-		]
-		
-	})
+})
+```
 
 ###  $route 和$router
 	route是路由信息对象，里面主要包含路由的一些基本信息，
 	包括name、meta、path、hash、query、params、fullPath、matched、redirectedFrom
 	
 	router是VueRouter的实例，包含了一些路由的跳转方法，钩子函数等
-	
+
 
 
 ### 路由的默认路径【redirect】
-	const routes = [
-		{
-			path:'/',
-			redirect:'/home'
-			component:
-		}
-	]
+```javascript
+const routes = [
+	{
+		path:'/',
+		redirect:'/home'
+		component:
+	}
+]
+```
 
 ### 路由模式
-	const router = new VueRouter({
-	  routes:r,
-	  mode:"history",
-	  linkActiveClass:""
-	})
+```javascript
+const router = new VueRouter({
+  routes:r,
+  mode:"history",
+  linkActiveClass:""
+})
+```
 
 ### 路由代码跳转
-	有时候, 页面的跳转可能需要执行对应的JavaScript代码, 这个时候, 就可以使用触发事件的跳转方式了
-	<buttton @click="tiaozhuan"></botton>
-	
-	mathods:{
-		tiaozhuan(){
-			this.$route.push('/home')
-		}
+```javascript
+//有时候, 页面的跳转可能需要执行对应的JavaScript代码, 这个时候, 就可以使用触发事件的跳转方式了
+<buttton @click="tiaozhuan"></botton>
+
+mathods:{
+	tiaozhuan(){
+		this.$route.push('/home')
 	}
+}
+```
 ### 动态路由
 	在某些情况下，一个页面的path路径可能是不确定的，比如我们进入用户界面时，希望是如下的路径：
 	/user/aaaa或/user/bbbb
@@ -196,36 +332,40 @@
 	<router-link to:"/home/123">点击跳转</router-link>
 
 ### 路由懒加载
-	1、amd写法
-	const Home = resolve => require(['../components/Home.vue'], resolve);
-	2、es6写法
-	const Home = () => import('../components/Home.vue')
-	{
-		path:'',
-		components:Home
-	}	
-	
+```javascript
+//amd写法
+const Home = resolve => require(['../components/Home.vue'], resolve);
+//es6写法
+const Home = () => import('../components/Home.vue')
+{
+	path:'',
+	components:Home
+}	
+```
+
 ### 嵌套路由
 	实现嵌套*路由的两个步骤:
 	1、创建对应的子组件, 并且在路由映射中配置对应的子路由.
 	2、在组件内部使用<router-view>标签.
-	
+
 ### 嵌套路由基础【children[]】
-	{
-		path: "/About",
-		component: () => import("../views/About.vue"),
-		children: [
-			{
-				//这个是设置路径，并且不需要加【/】
-				path:'aboutA',
-				component:aboutA,
-			},
-			{
-				path:'aboutB',
-				component:aboutB
-			}
-		]
-	}
+```javascript
+{
+	path: "/About",
+	component: () => import("../views/About.vue"),
+	children: [
+		{
+			//这个是设置路径，并且不需要加【/】
+			path:'aboutA',
+			component:aboutA,
+		},
+		{
+			path:'aboutB',
+			component:aboutB
+		}
+	]
+}
+```
 
 
 ### 路由导航守卫的【beforeEach】主要用来监听监听路由的进入和离开的.
@@ -238,8 +378,9 @@
 		to.xxx
 	  next()
 	})
-	
-	
+
+
+​	
 ###	路由传参
 	一、router-link路由导航
 	
@@ -341,7 +482,7 @@
 	2.接收方法不同， 一个用 query 来接收， 一个用 params 接收 ，总结就是谁发得 谁去接收
 	3.query 在刷新页面得时候参数不会消失，而 params 刷新页面得时候会参数消失，可以考虑本地存储解决
 	4.query 传得参数都是显示在url 地址栏当中，而 params 传参不会显示在地址栏
-	
+
 ## vuex
 ### 起步
 	export default new Vuex.Store({
@@ -453,13 +594,13 @@
 	*子访问父
 	this.$root.$data.b
 	$parent
-	
+
 #### 父组件模板的所有东西都会在父级作用域内编译；
 #### 子组件模板的所有东西都会在子级作用域内编译
 #### 如果内容在子组件，希望父组件告诉我们如何展示
 #### 利用slot作用域插槽就可以了
-	
-	
+
+
 ### 插槽slot
 	【组件一般在实例化后，实例的标签内默认不能再添加元素。如有需要，那么需要加入slot】
 	<body>
@@ -480,17 +621,18 @@
 				<slot name="aa"><span>11</span></slot>
 				<slot name="bb"><span>22</span></slot>
 				<slot name="cc"><span>33</span></slot>
-				
-				
-				<slot :data="names">
-					<ul>
-						<li v-for="i in names">{{i}}</li>
-					</ul>
-				</slot>
-			</div>
-		</template>
-	</body>
-	
+
+
+​				
+​				<slot :data="names">
+​					<ul>
+​						<li v-for="i in names">{{i}}</li>
+​					</ul>
+​				</slot>
+​			</div>
+​		</template>
+​	</body>
+​	
 	<script type="text/javascript">
 		let vm  = new Vue({
 			el:"#app",
@@ -535,7 +677,7 @@
 	        components:{jjjjj,kkkkk}
 		})
 	</script>
-	
+
 ### 谈谈你对MVVM开发模式的理解
 	View层：
 	视图层
@@ -557,7 +699,7 @@
 		return n < 100
 	})
 	console.log(nnums)  //[33, 22, 77, 2]
-	
+
 ### 数组方法map【遍历】
 	const nums=[33,22,77,123,667,2,273]
 	let a = nums.map(function(n){
@@ -577,15 +719,16 @@
 	const Foo = () => Promise.resolve({
 	  template: '<div>hello vue !</div>'
 	})
-	
+
 ### 什么是渐进式框架
 	渐进式意味着可以将VUE作为应用的一部分嵌入其中
-	
-	
+
+
+​	
 ### ES6导入导出	
 	import r from('/r')
 	export default r
-	
+
 ### v-once 
 	只渲染一次，不会随着数据的改变而改变
 	<h1 v-once>{{}}</h1>
@@ -600,8 +743,9 @@
 	在vue解析之后，div中没有v-cloak
 	[v-cloak]{display:none;}
 	<h1 v-cloak>{{}}</h1>
-	
-	
+
+
+​	
 ### v-bind:绑定属性
 
 ### 类绑定
@@ -610,15 +754,15 @@
 ### 属性绑定
 	<div v-bind:style="{ css属性名: css属性值 }"></div>
 	<div v-bind:style="[ {,} ]"></div>
-	
+
 ### 什么场景使用计算属性
 	计算属性一般没有set方法，只读属性
 	computed: 每次调用的时候，如果里面的数据没有发生变化，将不会再次执行这个函数
-	
+
 ### 计算属性methods、computed
 	相较于methods，不管依赖的数据变不变，methods都会重新计算，但是依赖数据不变的时候computed从缓存中获取，不会重新计算。
 	每次使用时，methods里的函数都会调用
-	
+
 ### computed和watch有什么区别
 
 	computed
@@ -634,7 +778,7 @@
 	使用场景
 	当我们要进行数值计算，而且依赖于其他数据，那么把这个数据设计为computed
 	如果你需要在某个数据变化时做一些事情，使用watch来观察这个数据变化。
-	
+
 ### . computed 和 watch 有什么区别及运用场景?
 
 	区别
@@ -647,12 +791,13 @@
 	当我们需要在数据变化时执行异步或开销较大的操作时,
 	应该使用 watch,使用 watch 选项允许我们执行异步操作 ( 访问一个 API ),限制我们执行该操作的频率,
 	并在我们得到最终结果前,设置中间状态。这些都是计算属性无法做到的。
-	
-	
-	
-	
-	
-	
+
+
+​	
+​	
+​	
+​	
+​	
 ### 对象增强写法
 	let obj = {
 		name,
@@ -665,7 +810,7 @@
 		age:age,
 		run:function(){}
 	}
-	
+
 ### v-on:传参
 	<div v-on:click="run(''.$event)"></div>
 ### 事件修饰
@@ -675,9 +820,11 @@
 ### 事件冒泡
 	点击子元素的时候，如果父元素也有事件，那么两个地方的事件都会触发。
 	当子元素添加了.stop的时候，就不会同时触发父级的事件
-	
-###  【非v-for！！】 dom出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
-	这个KEY给每个节点做了唯一的标识，这样vue会重新渲染
+
+###  v-if-else中的key
+
+	 dom出于性能的考虑，会尽可能复用已经存在的元素，而不是创建新的元素，这个时候就需要KEY
+	 这个KEY给每个节点做了唯一的标识，这样vue会重新渲染
 ### v-for中key的作用主要是为了高效的更新虚拟DOM。  每个数据拥有唯一的标识
 
 ### 数组splice()
@@ -686,7 +833,7 @@
 	index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
 	howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
 	item1, ..., itemX	可选。向数组添加的新项目。
-	
+
 ### set()修改数据
 	//set(要修改的对象，索引值，修改后的值)
 	Vue.set(this.arr,1,'')
@@ -699,9 +846,9 @@
 			return n.xxxxxxxx;
 		}
 	}
-	
 
-	
+
+​	
 ### 数组多方法串联【过滤+遍历+汇总】
 	let newnums = nums.filter(function(n){
 		return n < 100
@@ -710,10 +857,11 @@
 	}).reduce(function(prev,v){
 		return prev + v
 	},0)
-	
-	
 
-		
+
+​	
+
+​		
 
 #### 样式绑定的区别   [值] {blooean} 
 
@@ -722,7 +870,7 @@
 	<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }">菜鸟教程</div>
 	<div v-bind:style="[baseStyles, overridingStyles]">菜鸟教程</div>
 #### 混入 (mixins)(created) 定义了一部分可复用的方法或者计算属性
-	
+
 	var mixin = {
 		created: function () {
 			document.write('混入调用' + '<br>')
@@ -734,11 +882,11 @@
 			document.write('组件调用' + '<br>')
 		}
 	});
-	
 
-	
+
+​	
 #### this.$emit('')可以触发一个自定义的事件  【!!!不是函数】
-	
+
 	1、子组件内创建一个方法：sendmsg();
 	2、子组件的sendmsg()方法内创建自定义方法this.$emit('函数名',参数)
 		创建出来的自定义事件func在实例中调用
@@ -764,7 +912,7 @@
 			}
 		}
 	}
-	
+
 ### 组件props
 
 	<div id="app">
@@ -785,10 +933,10 @@
 					template: '<h1>{{props}}</h1>'
 				}
 			}
-
+	
 		})
 	</script>
-	
+
 ### diff算法
 
 	diff算法的本质是找出两个对象之间的差异，目的是尽可能复用节点。
@@ -797,7 +945,7 @@
 	key 的作用 主要是
 	决定节点是否可以复用
 	建立key-index的索引,主要是替代遍历，提升性能
-	
+
 ### Object.defineProperty(对象名，属性名，属性)  创建对象
 
 	Vue 则采用的是数据劫持与发布订阅相结合的方式实现双向绑定，数据劫持主要通过 Object.defineProperty 来实现。
@@ -823,14 +971,14 @@
 		obj.txt = e.target.value
 	    })
 	</script>	
- 	
+
 
 ### 虚拟 DOM 的实现原理主要包括以下 3 部分：
 
 	用 JavaScript 对象模拟真实 DOM 树，对真实 DOM 进行抽象；
 	diff 算法 — 比较两棵虚拟 DOM 树的差异；
 	pach 算法 — 将两个虚拟 DOM 对象的差异应用到真正的 DOM 树	
-	
+
 ### 现在 vue3.0 也全面改用 TypeScript 来重写
 
 	3.0 将带来基于代理 Proxy 的 observer 实现，提供全语言覆盖的反应性跟踪。
@@ -839,11 +987,11 @@
 		2.检测属性的添加和删除；
 		3.检测数组索引和长度的变更；
 		4.支持 Map、Set、WeakMap 和 WeakSet。
-		
+
 ### v-once
 
 	<span v-once>这个将不会改变: {{ msg }}</span>
-	
+
 ### 怎样理解 Vue 的单向数据流？
 
 	所有的 prop 都使得其父子 prop 之间形成了一个单向下行绑定：父级 prop 的更新会向下流动到子组件中，
@@ -874,14 +1022,14 @@
 	destroyed（销毁后） 在实例销毁之后调用。
 
 
-	
-		
+​	
+​		
 ### 在哪个生命周期内调用异步请求？
 
 	可以在钩子函数 created、beforeMount、mounted 中进行调用，
 	因为在这三个钩子函数中，data 已经创建，可以将服务端端返回的数据进行赋值。
 	但是本人推荐在 created 钩子函数中调用异步请求
-	
+
 ### vue等单页面应用及其优缺点
 
 	优点：Vue 的目标是通过尽可能简单的 API 实现响应的数据绑定和组合的视图组件，核心是一个响应的数据绑定系统。
@@ -892,11 +1040,12 @@
 	第一次加载首页耗时相对长一些；
 	不可以使用浏览器的导航按钮需要自行实现前进、后退。
 
-	
+
+​	
 ### v-on 绑定多个方法
 
 	<p v-on="{click:dbClick,mousemove:MouseClick}"></p>
-	
+
 ### v-on事件修饰符
 
 	stop阻止单击事件冒泡
@@ -905,7 +1054,7 @@
 	只有修饰符
 	capture添加事件侦听器时使用事件捕获模式
 	self只当事件在该元素本身（而不是子元素）触发时触发回调
-	
+
 ### v-model的常用修饰符
 
 	在添加了lazy之后，会把 oninput 事件改成 onchange 事件。
@@ -949,16 +1098,16 @@
 	  },
 	  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 	})
-	
 
 
-		
+
+
 ### :todo循环组件数据
 
 	<child v-for= "items in arr" :todo="items"></child>
-	
 
-	
+
+​	
 ### 全局自定义指令Vue.directive
 
 	<input type="text"  name="" id="" value="" v-focus />
@@ -975,8 +1124,9 @@
 	update: 每当元素本身更新(但是子元素还未更新)时触发
 	componentUpdate: 每当组件和子组件被更新时触发
 	unbind: 一旦指令被移除时触发。
-	
-	
+
+
+​	
 ### 数组删除
 
 	<tr v-for="(item,index) in arr_obj" :key="item.a">
@@ -998,7 +1148,7 @@
 	dele_arr_index(id){
 		this.arr_obj.splice(id,1)
 	}
-	
+
 ### 获取dom   get($event)
 
 	<div @click="get($event)"></div>
@@ -1007,9 +1157,9 @@
 	get(data){
 		data.currentTarget.className='';
 	}
-	
 
-	
+
+​	
 ### 在 beforeDestroy 中销毁定时器
 
 
@@ -1046,18 +1196,19 @@
 				//这里才可以
 			})
 		}
-		
-	
+
+
+​	
 
 
 #怎么解决vue动态设置img的src不生效的问题
 
 	 logo:require("./../assets/images/logo.png")
-	
+
 #Vue3.0你知道有哪些改进
 
 	Vue3 中响应式数据原理改成proxy
-	
+
 #对 Vue 项目进行哪些优化？
 
 	v-if 和 v-show 区分使用场景
@@ -1072,32 +1223,34 @@
 
 	可能会导致xss攻击
 	v-html会替换掉标签内部的子元素
-	
+
 #Vue的渲染过程
 
 	1、把模板编译为render函数
 	2、实例进行挂载, 根据根节点render函数的调用，递归的生成虚拟dom
 	3、对比虚拟dom，渲染到真实dom
 	4、组件内部data发生变化，组件和子组件引用data作为props重新调用render函数，生成虚拟dom, 返回到步骤3
-	
-	
+
+
+​	
 #组件data是函数的原因
 
 	因为组件是用来复用的，JS里对象是引用关系，这样作用域没有隔离，而new Vue的实例，是不会被复用的，因此不存在引用对象问题
 
-	
+
+​	
 #如何比较React和Vue
 
 	监听数据变化的实现原理不同：
-
+	
 	Vue通过getter/setter以及一些函数，能精确知道数据变化
 	React默认是通过比较引用的方式(diff)进行的，React不精确监听数据变化
 	数据流不同：
-
+	
 	Vue2.0可以通过props实现双向绑定，用vuex单向数据流的状态管理框架
 	React不支持双向绑定，提倡单项数据流，Redux单向数据流的状态管理框架
 	组件通信的区别：
-
+	
 	Vue三种组件通信方法：
 	父组件通过props向子组件传递数据或回调
 	子组件通过事件event向父组件发送数据或回调
@@ -1107,7 +1260,7 @@
 	React不支持子组件像父组件发送数据，而使用的是回调函数
 	通过 context实现父组件向子组件传入数据， 可跨层级
 	模板渲染方式不同：
-
+	
 	表面上来看：
 	React通过JSX渲染模板
 	Vue通过HTML进行渲染
@@ -1115,44 +1268,46 @@
 	React是通过原生JS实现模板中常见语法,如：插件，条件，循环
 	Vue是与组件JS分离的单独模板，通过指令实现，如：v-if
 	模板中使用的数据：
-
+	
 	React里模板中使用的数据可以直接import的组件在render中调用
 	Vue里模板中使用的数据必须要在this上进行中转，还要import一个组件，还要在components中声明
 	渲染过程不同：
-
+	
 	Vue不需要渲染整个组件树
 	React状态改变时，全部子组件重新渲染
 	框架本质不同：
-
+	
 	Vue本质是MVVM框架，由MVC发展而来
 	React是前端组件化框架，由后端组件化发展而来
 	Vuex和Redux的区别：
-
+	
 	Vuex可以使用dispatch、commit提交更新
 	Redux只能用dispatch提交更新
 	组合不同功能方式不同：
-
+	
 	Vue组合不同功能方式是通过mixin，可以帮我定义的模板进行编译、声明的props接收到数据….
 	React组合不同功能方式是通过HoC(高阶组件)，本质是高阶函数	
-	
-	
-	
+
+
+​	
+​	
 #Vue中相同逻辑如何抽离
 
 	使用混入
 	Vue.mixin用法给组件每个生命周期，函数等都混入一些公共逻辑	
-	
+
 #为什么v-for和v-if不能连用
 
 	当 v-for 和 v-if 处于同一个节点时，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中。
 	如果要遍历的数组很大，而真正要展示的数据很少时，这将造成很大的性能浪费。 这种场景建议使用 computed，先对数据进行过滤
-	
-	
 
-	
 
-	
-	
+​	
+
+​	
+
+
+​	
 #prop 验证，和默认值
 
 	我们在父组件给子组件传值得时候，为了避免不必要的错误，可以给prop的值进行类型设定，
@@ -1166,21 +1321,21 @@
 			required: true
 		}
 	}
-	
+
 #如何让CSS只在当前组件中起作用？
 	将当前组件的style修改为style scoped
 	
 #<keep-alive></keep-alive>的作用是什么？
 
 	<keep-alive></keep-alive> 包裹动态组件时，会缓存不活动的组件实例,主要用于保留组件状态或避免重新渲染。
-	
+
 ##vue.js的两个核心是什么？
 
 	数据驱动、组件系统
-	
 
-	
-	
+
+​	
+​	
 ###网页从输入网址到渲染完成经历了哪些过程？
 
 	输入网址；
@@ -1228,36 +1383,37 @@
 	var json = {};
 	// 3. 所有字母出现的次数，判断对象中是否存在数组中的值，如果存在值 +1，不存在赋值为 1
 	for(var i = 0; i < newArr.length; i++){
-	
-	
-		  // 类似：json : { ‘a’: 3, ’b’: 1 }
-		  if(json[newArr[i]]){
-			 json[newArr[i]] +=1;
-		  } else {
-			   json[newArr[i]] = 1;
-		  }
-	}
-	// 4 定义两个变量存储字符值，字符出现的字数
-	var num = 0 ; //次数
-	var element = ""; //最多的项
-	for(var k in json){
-	   if(json[k] > num){
-		 num = json[k];
-		 element = k ;
-	   }
-	}
-	console.log("出现次数："+num +"最多的字符："+ element);
+
+
+​	
+​		  // 类似：json : { ‘a’: 3, ’b’: 1 }
+​		  if(json[newArr[i]]){
+​			 json[newArr[i]] +=1;
+​		  } else {
+​			   json[newArr[i]] = 1;
+​		  }
+​	}
+​	// 4 定义两个变量存储字符值，字符出现的字数
+​	var num = 0 ; //次数
+​	var element = ""; //最多的项
+​	for(var k in json){
+​	   if(json[k] > num){
+​		 num = json[k];
+​		 element = k ;
+​	   }
+​	}
+​	console.log("出现次数："+num +"最多的字符："+ element);
 
 
 
-	
+
 #常见的浏览器内核有哪些 ？
 
 	Trident 内核：IE, 360，搜狗浏览器 MaxThon、TT、The World,等。[又称 MSHTML]
 	Gecko 内核：火狐，FF，MozillaSuite / SeaMonkey 等
 	Presto 内核：Opera7 及以上。[Opera 内核原为：Presto，现为：Blink]
 	Webkit 内核：Safari，Chrome 等。 [ Chrome 的：Blink（WebKit 的分支）]
-	  
+
 
 #事件委托是什么
 
@@ -1357,13 +1513,14 @@
 	  flex-direction:flex-direction: row | row-reverse | column | column-reverse; /*主轴的方向*/
 	  flex-wrap: nowrap | wrap | wrap-reverse;/*换行方式*/
 	  flex-flow /*以上的结合	*/
-	  
-	  
-	  justify-content: flex-start | flex-end | center | space-between | space-around;/*水平对齐方式*/
-	  align-items: flex-start | flex-end | center | baseline | stretch;/*垂直对齐方式*/
-	  align-content: flex-start | flex-end | center | space-between | space-around | stretch;/*出现多行时的垂直对齐方式*/
-	}
 
+
+​	  
+​	  justify-content: flex-start | flex-end | center | space-between | space-around;/*水平对齐方式*/
+​	  align-items: flex-start | flex-end | center | baseline | stretch;/*垂直对齐方式*/
+​	  align-content: flex-start | flex-end | center | space-between | space-around | stretch;/*出现多行时的垂直对齐方式*/
+​	}
+​	
 	.item {
 	  
 	  flex-grow: <number>; /* default 0 */  /*子元素放大比例*/
@@ -1404,8 +1561,9 @@
 	和普通函数不同的是，构造函数调用后会得到一个对象
 	构造函数中的返回值一直都是对象
 	相比于对象来说，构造函数可以携带参数
-	
-	
+
+
+​	
 #原型链
 
 	实例对象通过 __proto__ 得到实例对象的原型对象
@@ -1415,7 +1573,7 @@
 		Dog.prototype.__proto__ === Animal.prototype  
 		Animal.prototype.__proto__ === Object.prototype  
 		Object.prototype.__proto__ === null 
-	
+
 
 #继承属性
 
@@ -1435,7 +1593,7 @@
 
 	Teacher.prototype = Object.create(Person.prototype)
 	Teacher.prototype.constructor = Teacher
-	
+
 #hasOwnProperty 查询属性
 
 #字符串方法
@@ -1448,14 +1606,14 @@
 	replace()
 	charAt() 方法返回字符串中指定下标（位置）的字符串：
 	split() 将字符串转换为数组：
-			
+
 #数组去重
 
 	if(新数组.indexOf(旧数组[i]) == -1){
 	    新数组.push(旧数组[i]);
 	}			
-	
-## 添加排序函数的sort()
+
+### 添加排序函数的sort()
 	<script type="text/javascript">
 		function sortNumber(a,b)
 		{
@@ -1497,8 +1655,9 @@
 		return arr;
 	}
 	console.log(paixu(arr));
-	
-		
+
+
+​		
 ### 数组方法
 
 	join() 方法也可将所有数组元素结合为一个字符串。
@@ -1512,7 +1671,7 @@
 		第二个参数（b）定义应删除多少元素。
 		c定义要添加的新元素。
 	concat();
-	
+
 ### 数组排序方法	sort（）
 
 	通常按照字母顺序排序，如果想让数字按照数字大小排序，需要添加以下方法
@@ -1527,7 +1686,7 @@
 
 	函数内部可以访问函数外部的变量，反之不能访问。如果需要访问，则需要用到ruturn.
 	ie无法回收闭包内变量的内存空间
-
+	
 	var arr = [1,2,3,4,5];
 	for(var i = 0; i < arr.length; i++){
 	  arr[i] = function(){
@@ -1535,8 +1694,9 @@
 	  }
 	}
 	arr[3]();
-	
+
 #outline: none;
+
 ### let / const
 		var声明变量可以重复声明，而let不可以重复声明
 		var是不受限于块级的，而let是受限于块级
@@ -1555,13 +1715,13 @@
 	//构造函数用prototype指向原型
 	//实例用__proto__指向原型
 	//原型用constructor指向构造函数
-
+	
 	const c = function(a,b){
 		this.a = a+22
 		this.b = b
 	}
 	console.log(c.prototype.dd = 'dddd');
-
+	
 	const cc = new c(22,33);
 	console.log(cc.a);
 	console.log(cc.__proto__.ee = 'eee')
@@ -1569,9 +1729,10 @@
 
 ### vm.$set() 解决对象新增属性不能响应的问题
 	Vue.set( target, propertyName/index, value )
-	
-	
-	
+
+
+​	
+​	
 #es6
 #vue
 #less
@@ -1607,10 +1768,146 @@
 	    }
 	
 	   });
-  rem单位
+#####   css初始化
+
+```css
+html, body, div, span, applet, object, iframe,
+ h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+ a, abbr, acronym, address, big, cite, code,
+ del, dfn, em, img, ins, kbd, q, s, samp,
+ small, strike, strong, sub, sup, tt, var,
+ b, u, i, center,
+ dl, dt, dd, ol, ul, li,
+ fieldset, form, label, legend,
+ table, caption, tbody, tfoot, thead, tr, th, td,
+ article, aside, canvas, details, embed,
+ figure, figcaption, footer, header,
+ menu, nav, output, ruby, section, summary,
+ time, mark, audio, video, input {
+     margin: 0;
+     padding: 0;
+     border: 0;
+     font-size: 100%;
+     font-weight: normal;
+     vertical-align: baseline;
+ }
+
+
+/* 禁用iPhone中Safari的字号自动调整 */
+html {
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+/* 解决IOS默认滑动很卡的情况 */
+-webkit-overflow-scrolling : touch;
+}
+
+/* 禁止缩放表单 */
+input[type=“submit”], input[type=“reset”], input[type=“button”], input {
+resize: none;
+border: none;
+}
+
+/* 取消链接高亮 */
+body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+margin: 0;
+padding: 0;
+}
+
+/* 设置HTML5元素为块 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+display: block;
+}
+
+/* 图片自适应 */
+img {
+width: 100%;
+height: auto;
+width: auto\9; /* ie8 */
+display: block;
+-ms-interpolation-mode: bicubic;/*为了照顾ie图片缩放失真*/
+}
+
+
+
+body {
+font: 12px/1.5 ‘Microsoft YaHei’,‘宋体’, Tahoma, Arial, sans-serif;
+color: #555;
+background-color: #F7F7F7;
+}
+em, i {
+font-style: normal;
+}
+ul,li{
+list-style-type: none;
+}
+strong {
+font-weight: normal;
+}
+.clearfix:after {
+content: “”;
+display: block;
+visibility: hidden;
+height: 0;
+clear: both;
+}
+.clearfix {
+zoom: 1;
+}
+a {
+text-decoration: none;
+color: #969696;
+font-family: ‘Microsoft YaHei’, Tahoma, Arial, sans-serif;
+}
+a:hover {
+text-decoration: none;
+}
+ul, ol {
+list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+font-size: 100%;
+font-family: ‘Microsoft YaHei’;
+}
+img {
+border: none;
+}
+input{
+font-family: ‘Microsoft YaHei’;
+}
+/*单行溢出*/
+.one-txt-cut{
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+}
+/*多行溢出 手机端使用*/
+.txt-cut{
+overflow : hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+/ -webkit-line-clamp: 2; /
+-webkit-box-orient: vertical;
+}
+/*移动端点击a链接出现蓝色背景问题解决 */
+a:link,a:active,a:visited,a:hover {
+background: none;
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-tap-highlight-color: transparent;
+}
+```
+
+
+### fastclick解决在手机上点击事件的300ms延迟
+
+```jsx
+if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+    }, false);
+}
+```
+
+
+	rem单位
 	媒体查询
-	CSS初始化
-	fastclick可以解决在手机上点击事件的300ms延迟
-	
-	
-	
