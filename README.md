@@ -1,10 +1,42 @@
+前端架构师
+
 #### *scss*
 
 #### *TypeScript*
 
-#### *HTTP*
-
 #### *vue网络请求*
+
+### async、await
+
+	document.getElementById('id').onclick= async()=>{
+		let a = await alert(1)
+		console.log(a)
+	}
+	//generator yield
+	function* h(){
+	    yield 'hello';
+	    yield 'world';
+	    return 'ok'
+	} 
+	let hh = h();
+	console.log(hh.next())
+	console.log(hh.next())
+	console.log(hh.next())
+### HTTP
+
+#### 输入一个网址http全过程
+
+```
+1、对网址进行DNS域名解析得到IP地址
+2、根据这个IP地址找到服务器，发起tcp三次握手
+3、发起http请求
+4、服务器响应http请求，浏览器得到数据
+5、浏览器解析
+6、浏览器渲染
+7、关闭TCP
+```
+
+
 
 ## 闭包
 
@@ -38,6 +70,10 @@
 ### 原型链的概念
 
 ```javascript
+实例对象通过__proto__找原型，再通过__proto__找原型的原型    最终找不到的时候是：null
+
+
+
 //当我们访问一个对象的属性时，如果这个对象内部不存在这个属性，那么他就会去prototype里找这个属性，这个prototype又会有自己的prototype，于是就这样一直找下去，也就是我们平时所说的原型链的概念。
 
 function a(){
@@ -57,6 +93,24 @@ console.log(new c().aname)//从才开始找，再找b，再找a
 ```
 
 ### 继承
+
+### es6继承
+
+```javascript
+class a extends b{
+    constructor(){
+		super()
+        this.name
+    }
+}
+
+简单写法：
+class a extends b{
+   name
+}
+```
+
+
 
 #### 原型链继承
 
@@ -1492,26 +1546,67 @@ for(var i = 0; i < newArr.length; i++){
 		  text-overflow:ellipsis; 
 	}
 
+### display: grid
+
+```css
+.f {
+    display: grid;
+    grid-template-columns: 100px 200px auto;/*行布局*/
+    grid-template-rows: repeat(3, 33.33%);/*列布局*/
+    grid-row-gap: 20px;/*行间距*/
+	grid-column-gap: 20px;/*列间距*/
+    /*grid-gap*/
+}
+
+.f {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+    /*单元格的大小是固定的，但是容器的大小不确定。如果希望每一行（或每一列）容纳尽可能多的单元格，这时可以使用auto-fill关键字表示自动填充。*/
+}
+
+fr 关键字
+/**/为了方便表示比例关系，网格布局提供了fr关键字（fraction 的缩写，意为"片段"）。如果两列的宽度分别为1fr和2fr，就表示后者是前者的两倍。
+.f{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: repeat(3, 33.33%);
+}
+
+更多详情见：http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html
+```
+
+
+
 ### flex
 
 ```css
+Webkit 内核的浏览器，必须加上 -webkit 前缀
+
 .box{
   display: -webkit-flex; /* Safari */
   display: flex;
-  flex-direction:flex-direction: row | row-reverse | column | column-reverse; 
+    
   /*主轴的方向*/
-  flex-wrap: nowrap | wrap | wrap-reverse;
+  flex-direction:flex-direction: row | row-reverse | column | column-reverse; 
   /*换行方式*/
+  flex-wrap: nowrap | wrap | wrap-reverse;
+  
   flex-flow 
-  /*以上的结合	*/ 
-  justify-content: flex-start | flex-end | center | space-between | space-around;
   /*水平对齐方式*/
-  align-items: flex-start | flex-end | center | baseline | stretch;
+  justify-content: flex-start | flex-end | center | space-between | space-around;
   /*垂直对齐方式*/
-  align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+  align-items: flex-start | flex-end | center | baseline | stretch;
   /*出现多行时的垂直对齐方式*/
+  align-content: flex-start | flex-end | center | space-between | space-around | stretch;
 }
 	
+
+order：子容器的排列顺序
+flex-grow：子容器剩余空间的拉伸比例
+flex-shrink：子容器超出空间的压缩比例
+flex-basis：子容器在不伸缩情况下的原始尺寸
+flex：子元素的 flex 属性是 flex-grow,flex-shrink 和 flex-basis 的简写
+align-self
 ```
 
 	.item {
@@ -1717,7 +1812,7 @@ for(var i = 0; i < newArr.length; i++){
 	    }
 	
 	   });
-#####   css初始化
+###   css初始化
 
 ```css
 html, body, div, span, applet, object, iframe,
@@ -1859,3 +1954,226 @@ if ('addEventListener' in document) {
 
 	rem单位
 	媒体查询
+
+### cookies,sessionstorage和localstorage
+
+```
+cookie是网站用来标记用户身份的一段数据，通常是一段加密的字符串，并且默认情况下只会在同源http请求中携带
+seesionstorage：浏览器本地存储的一种方式，以键值对的形式存储，存储的数据会在浏览器关闭后自动删除
+localstorage：数据一直都在
+
+cookie的大小不能超过4k
+sessionstorage 和 localstorage 的大小一般在5M以上，比cookie大的多
+有效时间不同
+```
+
+### CSS布局大全https://juejin.im/post/6844903574929932301
+
+
+
+比如1px 的边框。在`高清屏`下，移动端的1px 会很粗。 比如，这个是假的1像素
+
+目前主流的屏幕DPR=2 （iPhone 8）,或者3 （iPhone 8 Plus）。拿2倍屏来说，设备的物理像素要实现1像素，而DPR=2，所以css 像素只能是 0.5。一般设计稿是按照750来设计的，它上面的1px是以750来参照的，而我们写css样式是以设备375为参照的，所以我们应该写的0.5px就好了啊！ 试过了就知道，iOS 8+系统支持，安卓系统不支持。
+
+
+```javascript
+      var viewport = document.querySelector("meta[name=viewport]");
+      //下面是根据设备像素设置viewport
+      if (window.devicePixelRatio == 1) {
+          viewport.setAttribute('content', 'width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no');
+      }
+      if (window.devicePixelRatio == 2) {
+          viewport.setAttribute('content', 'width=device-width,initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no');
+      }
+      if (window.devicePixelRatio == 3) {
+          viewport.setAttribute('content', 'width=device-width,initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no');
+      }
+      var docEl = document.documentElement;
+      var fontsize = 32* (docEl.clientWidth / 750) + 'px';
+      docEl.style.fontSize = fontsize;
+```
+
+## BFC块级格式化上下文
+
+### BFC的布局规则
+
+- 内部的Box会在垂直方向，一个接一个地放置。
+- Box垂直方向的距离由margin决定。属于**同一个**BFC的两个相邻Box的margin会发生重叠。
+- 每个盒子（块盒与行盒）的margin box的左边，与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。
+- BFC的区域不会与float box重叠。
+- BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
+- 计算BFC的高度时，浮动元素也参与计算。
+
+### 如何创建BFC
+
+- 1、float的值不是none。
+- 2、position的值不是static或者relative。
+- 3、display的值是inline-block、table-cell、flex、table-caption或者inline-flex
+- 4、overflow的值不是visible
+
+父元素添加overflow: hidden;清除浮动
+
+
+
+### 淘宝rem处理方式
+
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<script type="text/javascript">
+			(function flexible (window, document) {
+			  var docEl = document.documentElement
+			  var dpr = window.devicePixelRatio || 1
+			
+			  // adjust body font size
+			  function setBodyFontSize () {
+			    if (document.body) {
+			      document.body.style.fontSize = (12 * dpr) + 'px'
+			    }
+			    else {
+			      document.addEventListener('DOMContentLoaded', setBodyFontSize)
+			    }
+			  }
+			  setBodyFontSize();
+			
+			  // set 1rem = viewWidth / 10
+			  function setRemUnit () {
+			    var rem = docEl.clientWidth / 10
+			    docEl.style.fontSize = rem + 'px'
+			  }
+			
+			  setRemUnit()
+			
+			  // reset rem unit on page resize
+			  window.addEventListener('resize', setRemUnit)
+			  window.addEventListener('pageshow', function (e) {
+			    if (e.persisted) {
+			      setRemUnit()
+			    }
+			  })
+			
+			  // detect 0.5px supports
+			  if (dpr >= 2) {
+			    var fakeBody = document.createElement('body')
+			    var testElement = document.createElement('div')
+			    testElement.style.border = '.5px solid transparent'
+			    fakeBody.appendChild(testElement)
+			    docEl.appendChild(fakeBody)
+			    if (testElement.offsetHeight === 1) {
+			      docEl.classList.add('hairlines')
+			    }
+			    docEl.removeChild(fakeBody)
+			  }
+			}(window, document))
+		</script>
+		<title></title>
+	</head>
+	<style type="text/css">
+		p{font-size: 2rem;}
+	</style>
+	<body>
+		<p>我不是</p>
+	</body>
+</html>
+```
+
+### 深浅拷贝
+
+```
+浅拷贝的意思就是只复制引用，而未复制真正的值。
+深拷贝就是对目标的完全拷贝，不像浅拷贝那样只是复制了一层引用，就连值也都复制了，
+只要进行了深拷贝，它们老死不相往来，谁也不会影响谁。
+```
+
+## 四、new和this
+
+**new 操作符具体干了什么？**
+
+> 当我们new一个数据的时候，new操作符到底做了什么？
+
+- 首先是创建实例对象{}
+- this 变量引用该对象，同时还继承了构造函数的原型
+- 其次属性和方法被加入到 this 引用的对象中
+- 并且新创建的对象由 this 所引用，最后隐式的返回 this
+
+**new的模拟实现**
+
+```js
+function objectFactory() {
+
+    var obj = new Object(),//从Object.prototype上克隆一个对象
+
+    Constructor = [].shift.call(arguments);//取得外部传入的构造器
+
+    var F=function(){};
+    F.prototype= Constructor.prototype;
+    obj=new F();//指向正确的原型
+
+    var ret = Constructor.apply(obj, arguments);//借用外部传入的构造器给obj设置属性
+
+    return typeof ret === 'object' ? ret : obj;//确保构造器总是返回一个对象
+
+};
+```
+
+**this 对象的理解**
+
+普通函数
+
+- this 总是指向函数的直接调用者
+- 如果有 new 关键字，this 指向 new 出来的实例对象
+- 在事件中，this 指向触发这个事件的对象
+- IE 下 attachEvent 中的 this 总是指向全局对象 Window
+- 箭头函数中，函数体内的this对象，就是定义时所在作用域的对象，而不是使用时所在的作用域的对象。
+
+```js
+function foo() {
+  console.log(this.a)
+}
+var a = 1
+foo()           //1       
+
+const obj = {
+  a: 2,
+  foo: foo
+}
+obj.foo()      //2
+
+const c = new foo()   //undefined
+```
+
+- 对于直接调用 foo 来说，不管 foo 函数被放在了什么地方，this 一定是window
+- 对于 obj.foo() 来说，我们只需要记住，谁调用了函数，谁就是 this，所以在这个场景下 foo 函数中的 this 就是 obj 对象
+- 对于 new 的方式来说，this 被永远绑定在了 new出来的对象上，不会被任何方式改变 this
+
+说完了以上几种情况，其实很多代码中的 this 应该就没什么问题了，下面让我们看看箭头函数中的 this
+
+```js
+function a() {
+  return () => {
+    return () => {
+      console.log(this)
+    }
+  }
+}
+a()()()        //Window
+```
+
+- 首先箭头函数其实是没有 this 的，箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this。在这个例子中，因为包裹箭头函数的第一个普通函数是 a，所以此时的 this 是 window。另外对箭头函数使用 bind这类函数是无效的。
+
+面试题
+
+https://zhuanlan.zhihu.com/p/82124513
+
+https://zhuanlan.zhihu.com/p/57338228
+
+https://zhuanlan.zhihu.com/p/158797820
+
+https://zhuanlan.zhihu.com/p/159439787
+
+https://zhuanlan.zhihu.com/p/63962882
+
+https://zhuanlan.zhihu.com/p/84212558
