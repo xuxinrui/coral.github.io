@@ -1201,27 +1201,7 @@ const Home = () => import('../components/Home.vue')
 
 
 ​	
-### 数组删除
 
-	<tr v-for="(item,index) in arr_obj" :key="item.a">
-		<td>{{item.a}}</td>
-		<td>{{item.b}}</td>
-		<td><button @click="dele_arr(item.a)" type="button">删除</button></td>
-		<td><button @click="dele_arr_index(index)" type="button">index删除</button></td>
-	</tr>
-	
-	----------------------------
-	var index = this.arr_obj.findIndex(item=>{
-		if(item.a ===id ){
-			return true;
-		}
-	})
-	
-	this.arr_obj.splice(index,1)
-	-----------------------------
-	dele_arr_index(id){
-		this.arr_obj.splice(id,1)
-	}
 
 ### 获取dom   get($event)
 
@@ -1234,23 +1214,7 @@ const Home = () => import('../components/Home.vue')
 
 
 ​	
-### 在 beforeDestroy 中销毁定时器
 
-
-
-
-### 双向绑定原理
-
-	当你把一个普通的 JavaScript 对象传入 Vue 实例作为 data 选项，Vue 将遍历此对象所有的 property，
-	并使用 Object.defineProperty 把这些 property 全部转为 getter/setter。
-	watcher
-	默认Vue在初始化数据时，会给data中的属性使用Object.defineProperty重新定义所有属性，
-	当页面到对应属性时，会进行依赖收集(收集当前组件中的watcher)如果属性发生变化会通知相关依赖进行更新操作
-
-### vue和react的区别
-
-	组件写法不一样, React推荐的做法是 JSX + inline style, 
-	Vue推荐的做法是webpack+vue-loader的单文件组件格式,即html,css,jd写在同一个文件;
 
 ### 延迟回调$nextTick
 	vue中的nextTick主要用于处理数据动态变化后，DOM还未及时更新的问题，用nextTick就可以获取数据更新后最新DOM的变化
@@ -1272,15 +1236,12 @@ const Home = () => import('../components/Home.vue')
 		}
 
 
-​	
+
 
 #### 怎么解决vue动态设置img的src不生效的问题
 
 	 logo:require("./../assets/images/logo.png")
 
-#### Vue3.0你知道有哪些改进
-
-	Vue3 中响应式数据原理改成proxy
 
 #### 对 Vue 项目进行哪些优化？
 
@@ -1292,17 +1253,7 @@ const Home = () => import('../components/Home.vue')
 	路由懒加载
 	第三方插件的按需引入
 
-#### Vue中v-html会导致哪些问题
 
-	可能会导致xss攻击
-	v-html会替换掉标签内部的子元素
-
-#### Vue的渲染过程
-
-	1、把模板编译为render函数
-	2、实例进行挂载, 根据根节点render函数的调用，递归的生成虚拟dom
-	3、对比虚拟dom，渲染到真实dom
-	4、组件内部data发生变化，组件和子组件引用data作为props重新调用render函数，生成虚拟dom, 返回到步骤3
 
 
 #### 组件data是函数的原因
@@ -1310,62 +1261,6 @@ const Home = () => import('../components/Home.vue')
 	因为组件是用来复用的，JS里对象是引用关系，这样作用域没有隔离，而new Vue的实例，是不会被复用的，因此不存在引用对象问题
 
 
-#### 如何比较React和Vue
-
-	监听数据变化的实现原理不同：
-	
-	Vue通过getter/setter以及一些函数，能精确知道数据变化
-	React默认是通过比较引用的方式(diff)进行的，React不精确监听数据变化
-	数据流不同：
-	
-	Vue2.0可以通过props实现双向绑定，用vuex单向数据流的状态管理框架
-	React不支持双向绑定，提倡单项数据流，Redux单向数据流的状态管理框架
-	组件通信的区别：
-	
-	Vue三种组件通信方法：
-	父组件通过props向子组件传递数据或回调
-	子组件通过事件event向父组件发送数据或回调
-	通过provide/inject实现父组件向子组件传入数据，可跨层级
-	React三种组件通信方法：
-	父组件通过props向子组件传递数据
-	React不支持子组件像父组件发送数据，而使用的是回调函数
-	通过 context实现父组件向子组件传入数据， 可跨层级
-	模板渲染方式不同：
-	
-	表面上来看：
-	React通过JSX渲染模板
-	Vue通过HTML进行渲染
-	深层上来看：
-	React是通过原生JS实现模板中常见语法,如：插件，条件，循环
-	Vue是与组件JS分离的单独模板，通过指令实现，如：v-if
-	模板中使用的数据：
-	
-	React里模板中使用的数据可以直接import的组件在render中调用
-	Vue里模板中使用的数据必须要在this上进行中转，还要import一个组件，还要在components中声明
-	渲染过程不同：
-	
-	Vue不需要渲染整个组件树
-	React状态改变时，全部子组件重新渲染
-	框架本质不同：
-	
-	Vue本质是MVVM框架，由MVC发展而来
-	React是前端组件化框架，由后端组件化发展而来
-	Vuex和Redux的区别：
-	
-	Vuex可以使用dispatch、commit提交更新
-	Redux只能用dispatch提交更新
-	组合不同功能方式不同：
-	
-	Vue组合不同功能方式是通过mixin，可以帮我定义的模板进行编译、声明的props接收到数据….
-	React组合不同功能方式是通过HoC(高阶组件)，本质是高阶函数	
-
-
-​	
-
-#### Vue中相同逻辑如何抽离
-
-	使用混入
-	Vue.mixin用法给组件每个生命周期，函数等都混入一些公共逻辑	
 
 #### 为什么v-for和v-if不能连用
 
@@ -1373,9 +1268,6 @@ const Home = () => import('../components/Home.vue')
 	如果要遍历的数组很大，而真正要展示的数据很少时，这将造成很大的性能浪费。 这种场景建议使用 computed，先对数据进行过滤
 
 
-​	
-
-​	
 
 
 #### prop 验证，和默认值
@@ -1399,10 +1291,6 @@ const Home = () => import('../components/Home.vue')
 #### <keep-alive></keep-alive>的作用是什么？
 
 	<keep-alive></keep-alive> 包裹动态组件时，会缓存不活动的组件实例,主要用于保留组件状态或避免重新渲染。
-
-#### vue.js的两个核心是什么？
-
-	数据驱动、组件系统
 
 
 ​	
@@ -1772,7 +1660,7 @@ align-self
 	
 		var声明变量可以重复声明，而let不可以重复声明
 		var会与window相映射（会挂一个属性），而let不与window相映射
-		var可以在声明的上面访问变量，而let有暂存死区，在声明的上面访问变量会报错
+		var可以在声明的上面访问变量，而let 区，在声明的上面访问变量会报错
 		const声明之后必须赋值，否则会报错const定义不可变的量，改变了就会报错
 		const和let一样不会与window相映射、支持块级作用域、在声明的上面访问变量会报错
 
@@ -1812,133 +1700,7 @@ align-self
 	    }
 	
 	   });
-###   css初始化
 
-```css
-html, body, div, span, applet, object, iframe,
- h1, h2, h3, h4, h5, h6, p, blockquote, pre,
- a, abbr, acronym, address, big, cite, code,
- del, dfn, em, img, ins, kbd, q, s, samp,
- small, strike, strong, sub, sup, tt, var,
- b, u, i, center,
- dl, dt, dd, ol, ul, li,
- fieldset, form, label, legend,
- table, caption, tbody, tfoot, thead, tr, th, td,
- article, aside, canvas, details, embed,
- figure, figcaption, footer, header,
- menu, nav, output, ruby, section, summary,
- time, mark, audio, video, input {
-     margin: 0;
-     padding: 0;
-     border: 0;
-     font-size: 100%;
-     font-weight: normal;
-     vertical-align: baseline;
- }
-
-
-/* 禁用iPhone中Safari的字号自动调整 */
-html {
--webkit-text-size-adjust: 100%;
--ms-text-size-adjust: 100%;
-/* 解决IOS默认滑动很卡的情况 */
--webkit-overflow-scrolling : touch;
-}
-
-/* 禁止缩放表单 */
-input[type=“submit”], input[type=“reset”], input[type=“button”], input {
-resize: none;
-border: none;
-}
-
-/* 取消链接高亮 */
-body, div, ul, li, ol, h1, h2, h3, h4, h5, h6, input, textarea, select, p, dl, dt, dd, a, img, button, form, table, th, tr, td, tbody, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
--webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-margin: 0;
-padding: 0;
-}
-
-/* 设置HTML5元素为块 */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-display: block;
-}
-
-/* 图片自适应 */
-img {
-width: 100%;
-height: auto;
-width: auto\9; /* ie8 */
-display: block;
--ms-interpolation-mode: bicubic;/*为了照顾ie图片缩放失真*/
-}
-
-
-
-body {
-font: 12px/1.5 ‘Microsoft YaHei’,‘宋体’, Tahoma, Arial, sans-serif;
-color: #555;
-background-color: #F7F7F7;
-}
-em, i {
-font-style: normal;
-}
-ul,li{
-list-style-type: none;
-}
-strong {
-font-weight: normal;
-}
-.clearfix:after {
-content: “”;
-display: block;
-visibility: hidden;
-height: 0;
-clear: both;
-}
-.clearfix {
-zoom: 1;
-}
-a {
-text-decoration: none;
-color: #969696;
-font-family: ‘Microsoft YaHei’, Tahoma, Arial, sans-serif;
-}
-a:hover {
-text-decoration: none;
-}
-ul, ol {
-list-style: none;
-}
-h1, h2, h3, h4, h5, h6 {
-font-size: 100%;
-font-family: ‘Microsoft YaHei’;
-}
-img {
-border: none;
-}
-input{
-font-family: ‘Microsoft YaHei’;
-}
-/*单行溢出*/
-.one-txt-cut{
-overflow: hidden;
-white-space: nowrap;
-text-overflow: ellipsis;
-}
-/*多行溢出 手机端使用*/
-.txt-cut{
-overflow : hidden;
-text-overflow: ellipsis;
-display: -webkit-box;
-/ -webkit-line-clamp: 2; /
--webkit-box-orient: vertical;
-}
-/*移动端点击a链接出现蓝色背景问题解决 */
-a:link,a:active,a:visited,a:hover {
-background: none;
--webkit-tap-highlight-color: rgba(0,0,0,0);
--webkit-tap-highlight-color: transparent;
-}
 ```
 
 ### fastclick解决在手机上点击事件的300ms延迟
@@ -2080,13 +1842,7 @@ sessionstorage 和 localstorage 的大小一般在5M以上，比cookie大的多
 </html>
 ```
 
-### 深浅拷贝
 
-```
-浅拷贝的意思就是只复制引用，而未复制真正的值。
-深拷贝就是对目标的完全拷贝，不像浅拷贝那样只是复制了一层引用，就连值也都复制了，
-只要进行了深拷贝，它们老死不相往来，谁也不会影响谁。
-```
 
 ## 四、new和this
 
@@ -2149,31 +1905,5 @@ const c = new foo()   //undefined
 - 对于 obj.foo() 来说，我们只需要记住，谁调用了函数，谁就是 this，所以在这个场景下 foo 函数中的 this 就是 obj 对象
 - 对于 new 的方式来说，this 被永远绑定在了 new出来的对象上，不会被任何方式改变 this
 
-说完了以上几种情况，其实很多代码中的 this 应该就没什么问题了，下面让我们看看箭头函数中的 this
 
-```js
-function a() {
-  return () => {
-    return () => {
-      console.log(this)
-    }
-  }
-}
-a()()()        //Window
-```
 
-- 首先箭头函数其实是没有 this 的，箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this。在这个例子中，因为包裹箭头函数的第一个普通函数是 a，所以此时的 this 是 window。另外对箭头函数使用 bind这类函数是无效的。
-
-面试题
-
-https://zhuanlan.zhihu.com/p/82124513
-
-https://zhuanlan.zhihu.com/p/57338228
-
-https://zhuanlan.zhihu.com/p/158797820
-
-https://zhuanlan.zhihu.com/p/159439787
-
-https://zhuanlan.zhihu.com/p/63962882
-
-https://zhuanlan.zhihu.com/p/84212558
