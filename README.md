@@ -1906,4 +1906,254 @@ const c = new foo()   //undefined
 - 对于 new 的方式来说，this 被永远绑定在了 new出来的对象上，不会被任何方式改变 this
 
 
+### 左固定，右自适应
+	1、BFC盒子，左固定宽，右不设置宽
+	2、flex ，左固定，右100%
+	
+	
+### 宏任务未任务
+	在一个事件循环中会出现主程序、宏任务、未微任务
+	
+	其中执行顺序是
+	1、主程序
+	2、微任务
+	3、宏任务
+	
+	若宏任务中还有微任务，则再执行宏任务中的微任务
+	
+### call() apply()
+	call的性能优于apply
+	
+	调用一个对象的方法
+	B.apply(A,[1,2,3,4,5])
+	A对象调用B 对象的方法
+	
+	用另一个对象替换当前对象
+	B.apply(A,[1,2,3,4,5])
+	A对象替换B对象
+	
+	如果call() apply()没有参数，那么指向全局
+	
+### 实现一个new
+	首先是创建实例对象{}
+	this 变量引用该对象，同时还继承了构造函数的原型
+	其次属性和方法被加入到 this 引用的对象中
+	并且新创建的对象由 this 所引用，最后隐式的返回 this
+
+function objectFactory() {
+
+	var obj = {}
+
+	console.log(arguments[0])
+
+	let Constructor = [].shift.call(arguments); //取得外部传入的构造器     call=>用另一个对象替换当前对象
+
+	//console.log(Constructor) //这里打印的是构造器
+
+	obj.__proto__ = Constructor.prototype;
+
+	var ret = Constructor.apply(obj, arguments); //借用外部传入的构造器给obj设置属性    obj继承Constructor
+
+	return typeof ret === 'object' ? ret : obj; //确保构造器总是返回一个对象
+
+};
+
+objectFactory(wobushi)
+			
+### css3动画
+	1、创建@keyframes 
+	@keyframes myfirst
+	{
+	from {background: red;}
+	to {background: yellow;}
+	}
+	
+	@-moz-    @-webkit-    @-o-
+	
+	2、使用这个keyframs
+	animation: myfirst 5s;
+	
+###  css3新内容
+	媒体查询
+	动画
+	盒模型定义   
+	box-sizing:border-box的时候，边框和padding包含在元素的宽高之内！ 
+	box-sizing:content-box的时候，边框和padding不包含在元素的宽高之内！如下图
+	弹性布局  Flex
+	栅格布局 grid
+	box-shadow: 水平阴影的位置,垂直阴影的位置,模糊距离,阴影的大小,阴影的颜色，内外侧阴影
+	
+
+### 你所知道的http的响应码及含义？
+
+	1xx(临时响应)100: 请求者应当继续提出请求。101(切换协议) 请求者已要求服务器切换协议，服务器已确认并准备进行切换。
+	2xx(成功)200：正确的请求返回正确的结果201：表示资源被正确的创建。比如说，我们 POST 用户名、密码正确创建了一个用户就可以返回 201。202：请求是正确的，但是结果正在处理中，这时候客户端可以通过轮询等机制继续请求。
+	3xx(已重定向)300：请求成功，但结果有多种选择。301：请求成功，但是资源被永久转移。303：使用 GET 来访问新的地址来获取资源。304：请求的资源并没有被修改过
+	4xx(请求错误)400：请求出现错误，比如请求头不对等。401：没有提供认证信息。请求的时候没有带上 Token 等。402：为以后需要所保留的状态码。403：请求的资源不允许访问。就是说没有权限。404：请求的内容不存在。
+	5xx(服务器错误)500：服务器错误。501：请求还没有被实现。三更灯火五更鸡，正是男儿读书
+
+### target、currentTarget的区别？
+
+	currentTarget当前所绑定事件的元素
+
+	target当前被点击的元素
+	
+### 事件代理
+	利用冒泡机制触发该事件
+### 阻止事件冒泡
+	window.event? window.event.cancelBubble = true : e.stopPropagation();
+	e.stopPropagation()
+	ie的方法是：e.cancelBubble = true
+### 阻止默认事件
+	w3c的方法是e.preventDefault()，IE则是使用e.returnValue = false;
+	
+### 页面渲染html的过程
+	解析DOM
+	解析CSS
+	生成渲染树
+	绘制到屏幕
+### sessionStorage
+// 存储
+sessionStorage.setItem("lastname", "Smith");
+// 检索
+document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
+
+### 递归
+	function add(n){
+				if(n===0){return 1};
+				
+				return n + add(n-1);
+			}
+			add(3)
+			
+### 基本数据类型   bigint
+	bigint数据类型的目的是比Number数据类型支持的范围更大的整数值。在对大整数执行数学运算时，以任意精度表示整数的能力尤为重要。使用BigInt，整数溢出将不再是问题。
+	 
+	
+	
+	
+### 基本类型symbol
+	//作用1
+				let s1 = Symbol('我是s1')
+				let s2 = Symbol('我是s2')
+
+				let obj = {
+					name:'xuxinrui',
+					age:27,
+					[s1]:'呵呵',
+					[s2]:'哈哈'
+				}
+
+				for(  index in obj){
+					console.log(obj[index])
+				}
+				//如果不想属性对外暴露
+				//这里不会循环出[s1] [s2]
+	
+### 判断右边的构造函数在不在我实例的原型链上
+### 深拷贝
+	<script type="text/javascript">
+		
+			const isComplexDataType = obj =>(typeof obj ==='object' || typeof obj ==='function') &&(obj !== null)
+			
+			const deepClone = function(obj, hash = new WeakMap()){
+				if(hash.has(obj)) return hash.get(obj)
+				let type = [Date,RegExp,Set,Map,WeakMap,WeakSet]
+				if(type.includes(obj.constructor)) return new obj.constructor(obj);
+				//如果成环了，参数obj = obj.loop = 最初的obj 会在weakMap中找到第一次放入的obj提前返回第一次放入weakMap的cloneObj
+				
+				let allDesc = Object.getOwnPropertyDescriptors(obj);//遍历传入参数所有键的特性
+				let cloneObj = Object.create(Object.getPrototypeOf(obj),allDesc);//继承原型
+				hash.set(obj,cloneObj)
+				
+				for (let key of Reflect.ownKeys(obj)){
+					//Reflect.ownKeys(obj)可以拷贝不可枚举属性和符号类型
+					//如果值是引用类型（非函数）则递归调用deepClone
+					cloneObj[key]=
+						(isComplexDataType(obj[key]) && typeof obj[key] !=='function')?
+							deepClone(obj[key],hash) :obj[key]
+				}
+				return cloneObj;
+			}
+			
+			
+			let obj = {
+				bigInt:BigInt(1234),
+				set:new Set([2]),
+				map:new Map([['a',22],['b',33]]),
+				num:0,
+				str:'',
+				bool:true,
+				unf:undefined,
+				nul:null,
+				obj:{
+					name:'name'
+				},
+				func:function(){
+					console.log('我是一个函数')
+				},
+				date:new Date(0),
+				reg: new RegExp('/我不是正则/ig'),
+				[Symbol('1')]:1
+			}
+			
+			Object.defineProperty(obj , 'inumberable',{
+				enumberable:false,
+				value:'不可枚举属性'
+			});
+			
+			 obj = Object.create(obj , Object.getOwnPropertyDescriptors(obj))
+			
+			obj.loop = obj
+			
+			
+			
+			let cloneObj = deepClone(obj);
+			console.log('obj',obj)
+			console.log('cloneObj',cloneObj)
+			
+			for (let key of Object.keys(cloneObj)){
+				if(typeof cloneObj[key] === 'object' || typeof cloneObj[key] === 'function'){
+					console.log(`${key}相同吗`,cloneObj[key] === obj[key])
+				}
+				
+			}
+		</script>
+
+### 防抖
+		function debounce(func, delay) {
+	  let timeout
+	  return function() {
+	    clearTimeout(timeout) // 如果持续触发，那么就清除定时器，定时器的回调就不会执行。
+	    timeout = setTimeout(() => {
+	      func.apply(this, arguments)
+	    }, delay)
+	  }
+	}
+	用法：
+
+	  box.onmousemove = debounce(function (e) {
+	    box.innerHTML = `${e.clientX}, ${e.clientY}`
+	  }, 1000)
+### 节流
+	function throttle(func, delay) {
+    let run = true
+    return function () {
+      if (!run) {
+        return  // 如果开关关闭了，那就直接不执行下边的代码
+      }
+      run = false // 持续触发的话，run一直是false，就会停在上边的判断那里
+      setTimeout(() => {
+        func.apply(this, arguments)
+        run = true // 定时器到时间之后，会把开关打开，我们的函数就会被执行
+      }, delay)
+    }
+  }
+调用的时候：
+
+box.onmousemove = throttle(function (e) {
+  box.innerHTML = `${e.clientX}, ${e.clientY}`
+}, 1000)
+
+
 
