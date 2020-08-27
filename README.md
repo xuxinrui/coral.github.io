@@ -1,3 +1,6 @@
+      obj  instanceof   Object;//true 
+实例  obj   在不在       Object   构造函数中
+
 前端架构师
 
 #### *scss*
