@@ -8,156 +8,129 @@
 
 ### scss
 
-		$qjc:#00ff00;
-	
-		@import 'tc.scss';
-	
-		#main p {
-			color: $qjc;
-			$fiveem: 10px !global;
-	
-			//基础嵌套
-			.c {
-				color: #000000;
-			}
-	
-			//父选择器场景 :
-			&:hover {
-				color: #ccc
-			}
-	
-			//父选择器场景 -【拼接父元素】
-			&-p {
-				color: #ddd;
-			}
-	
-			//属性嵌套
-			font: {
-				family: fantasy;
-				size: $fiveem;
-				weight: bold;
-			}
-	
-			//像素的乘除计算，颜色计算
-			.jisuana {
-				$width: 1000px;
-				width: $width/3;
-				height: (500px/2);
-	
-				margin-left: 0px + 8px/2px;
-				color: #ccc + #ddd;
-			}
-	
-			//字符串计算的两个结果
-			.jisuanb {
-				content: 'aa'+bb;
-	
-				.c {
-					content: aa+'bb';
-				}
-			}
-	
-			//像素的加减计算
-			.o {
-				margin: 3px + 4px;
-			}
-	
-			//字符串里的计算
-			.stringcompute {
-				content: "I ate #{5 * 10} pies!";
-			}
-	
-			//函数
-			.fnc {
-				color: hsl(0, 100%, 50%);
-			}
-	
-			//局部使用外部
-			.inp {
-				@import 'tc.scss';
-			}
-	
-			//继承共用的样式
-			.ext {
-				@extend .inp;
-				display: grid;
-				grid-template-rows: 0em;
-			}
-		}
-	
-		//自定义函数
-		$wa:60px;
-		$wb:30px;
-	
-		@function f($n) {
-			@return $n * $wa+$wb;
-		}
-	
-		.fc {
-			width: f(4);
-		}
-	
-		//混入
-		//定义
-		@mixin button($cc, $ss:20px) {
-			div {
-				color: $cc;
-				width: $ss;
-			}
-	
-		}
-	
-		//调用
-		.btsubmit {
-			@include button(aquamarine, 30px);
-		}
-	
-		//$qjc是个已经定义的颜色变量，这里当作第一个参数传进去
-		//第二个参数，没有定义，这时候会使用函数的默认值
-		@include button($qjc);
-	
-		//还支持（$arr...）语法
-	
-		//if语法
-		._if {
-			@if 1 {
-				border: 1px solid;
-			}
-	
-			@else if 0 {
-				color: green;
-			}
-		}
-	
-		//for语法
-		//或者through 
-		@for $i from 1 to 3 {
-			._for {
-				font-size: $i+rem;
-			}
-		}
-	
-		//each语法
-		@each $j in a,
-		b,
-		c {
-			._each {
-				background-image: url($j+'.jpg');
-			}
-		}
-	
-		//while语法
-		$k: 6;
-	
-		@while $k>0 {
-			.item-#{$k} {
-				width: 2em * $k;
-			}
-	
-			$k: $k - 3;
-		}
+$qjc:#00ff00;
+
+@import 'tc.scss';
 
 
+#main p {
+    color:$qjc;
+    $fiveem: 10px !global;
+    //基础嵌套
+    .c {
+      color: #000000;
+    }
+    //父选择器场景 :
+    &:hover{color:#ccc}
+
+    //父选择器场景 -【拼接父元素】
+    &-p{color: #ddd;}
+
+    //属性嵌套
+    font: {
+      family: fantasy;
+      size: $fiveem;
+      weight: bold;
+    }
+    //像素的乘除计算，颜色计算
+    .jisuana{
+      $width: 1000px;
+      width: $width/3;            
+      height: (500px/2);          
+      margin-left: 0px + 8px/2px; 
+      color: #ccc + #ddd;
+    }
+    //字符串计算的两个结果
+    .jisuanb{
+      
+      content: 'aa'+bb;
+      .c{
+        content: aa+'bb';
+      }
+    }
+    //像素的加减计算
+    .o{
+      margin: 3px + 4px;
+    }
+    //字符串里的计算
+    .stringcompute{
+      content: "I ate #{5 * 10} pies!";
+      
+    }
+    //函数
+    .fnc{
+      color: hsl(0, 100%, 50%);
+    }
+    //局部使用外部
+    .inp{
+      @import 'tc.scss';
+    }
+    //继承共用的样式
+    .ext{
+      @extend .inp;
+      display: grid;
+      grid-template-rows: 0em;
+    }
+  }
+
+//自定义函数
+$wa:60px;
+$wb:30px;
+
+@function f($n){
+  @return $n * $wa + $wb;
+}
+
+.fc{
+  width: f(4);
+}
+
+//混入
+//定义
+@mixin button($cc,$ss:20px) {
+  div{
+    color:$cc;
+    width: $ss;
+  }
+
+}
+//调用
+.btsubmit{
+  @include button(aquamarine,30px);
+}
+  //$qjc是个已经定义的颜色变量，这里当作第一个参数传进去
+  //第二个参数，没有定义，这时候会使用函数的默认值
+@include button($qjc);
+
+//还支持（$arr...）语法
+
+//if语法
+._if{
+  @if 1 { border: 1px solid; }
+  @else if 0{color: green;}
+}
+
+//for语法
+//或者through 
+@for $i from 1 to 3{
+  ._for{
+    font-size: $i+rem;
+  }
+}
+
+//each语法
+@each $j in a, b, c{
+  ._each{
+    background-image: url($j+'.jpg');
+  }
+}
+
+//while语法
+$k: 6;
+@while $k > 0 {
+  .item-#{$k} { width: 2em * $k; }
+  $k: $k - 3;
+}
 
 ### 实例  obj   在不在       Object   构造函数中
 `obj  instanceof   Object;//true` 
